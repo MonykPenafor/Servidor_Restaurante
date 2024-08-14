@@ -118,7 +118,7 @@ public class PreparoProdutoServico {
             resposta.entity(listaPreparoProdutoDTO);
         } catch (Exception ex) {
             resposta = Response.status(400);
-            resposta.entity("{\"erro\": \""+ex.getMessage()+"\"}");
+            resposta.entity(new MensagemErro(ex.getMessage()));
         }
         return resposta.build();
     }
@@ -130,11 +130,14 @@ public class PreparoProdutoServico {
         ResponseBuilder resposta;
         try {
             List<PreparoProdutoDTO> listaPreparoProdutoDTO = preparoProdutoNegocio.pesquisaPorProduto(codigoProduto);
+            for(PreparoProdutoDTO preparoProdutoDTO : listaPreparoProdutoDTO){
+                preparoProdutoDTO.setLink("/preparoproduto/codigo/" + preparoProdutoDTO.getCodigo());
+            }
             resposta = Response.ok();
             resposta.entity(listaPreparoProdutoDTO);
         } catch (Exception ex) {
             resposta = Response.status(400);
-            resposta.entity("{\"erro\": \""+ex.getMessage()+"\"}");
+            resposta.entity(new MensagemErro(ex.getMessage()));
         }
         return resposta.build();
     }
