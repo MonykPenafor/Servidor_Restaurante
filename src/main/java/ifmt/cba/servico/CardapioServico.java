@@ -1,10 +1,14 @@
 package ifmt.cba.servico;
 
+import java.util.List;
+
 import ifmt.cba.dto.CardapioDTO;
+import ifmt.cba.dto.GrupoAlimentarDTO;
 import ifmt.cba.negocio.CardapioNegocio;
 import ifmt.cba.persistencia.CardapioDAO;
 import ifmt.cba.persistencia.FabricaEntityManager;
 import ifmt.cba.persistencia.PersistenciaException;
+import ifmt.cba.servico.util.MensagemErro;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
@@ -39,11 +43,13 @@ public class CardapioServico {
         ResponseBuilder resposta;
         try {
             cardapioNegocio.inserir(cardapioDTO);
+            CardapioDTO cardapioDTOTemp = cardapioNegocio.pesquisaPorNome(cardapioDTO.getNome()).get(0);
+            cardapioDTOTemp.setLink("/cardapio/codigo/"+cardapioDTOTemp.getCodigo());
             resposta = Response.ok();
-            resposta.entity(cardapioNegocio.pesquisaPorNome(cardapioDTO.getNome()));
+            resposta.entity(cardapioDTOTemp);
         } catch (Exception ex) {
             resposta = Response.status(400);
-            resposta.entity("{\"erro\": \"" + ex.getMessage() + "\"}");
+            resposta.entity(new MensagemErro(ex.getMessage()));
         }
         return resposta.build();
     }
@@ -55,11 +61,13 @@ public class CardapioServico {
         ResponseBuilder resposta;
         try {
             cardapioNegocio.alterar(cardapioDTO);
+            CardapioDTO cardapioDTOTemp = cardapioNegocio.pesquisaCodigo(cardapioDTO.getCodigo());
+            cardapioDTOTemp.setLink("/cardapio/codigo/"+cardapioDTO.getCodigo());
             resposta = Response.ok();
-            resposta.entity(cardapioNegocio.pesquisaCodigo(cardapioDTO.getCodigo()));
+            resposta.entity(cardapioDTOTemp);
         } catch (Exception ex) {
             resposta = Response.status(400);
-            resposta.entity("{\"erro\": \"" + ex.getMessage() + "\"}");
+            resposta.entity(new MensagemErro(ex.getMessage()));
         }
         return resposta.build();
     }
@@ -74,7 +82,7 @@ public class CardapioServico {
             resposta = Response.ok();
         } catch (Exception ex) {
             resposta = Response.status(400);
-            resposta.entity("{\"erro\": \""+ex.getMessage()+"\"}");
+            resposta.entity(new MensagemErro(ex.getMessage()));
         }
         return resposta.build();
     }
@@ -86,11 +94,12 @@ public class CardapioServico {
         ResponseBuilder resposta;
         try {
             CardapioDTO cardapioDTO = cardapioNegocio.pesquisaCodigo(codigo);
+            cardapioDTO.setLink("/cardapio/codigo/"+cardapioDTO.getCodigo());
             resposta = Response.ok();
             resposta.entity(cardapioDTO);
         } catch (Exception ex) {
             resposta = Response.status(400);
-            resposta.entity("{\"erro\": \""+ex.getMessage()+"\"}");
+            resposta.entity(new MensagemErro(ex.getMessage()));
         }
         return resposta.build();
     }
@@ -102,11 +111,12 @@ public class CardapioServico {
         ResponseBuilder resposta;
         try {
             CardapioDTO cardapioDTO = cardapioNegocio.pesquisaPorNome(nome).get(0);
+            cardapioDTO.setLink("/grupoalimentar/codigo/"+cardapioDTO.getCodigo());
             resposta = Response.ok();
             resposta.entity(cardapioDTO);
         } catch (Exception ex) {
             resposta = Response.status(400);
-            resposta.entity("{\"erro\": \""+ex.getMessage()+"\"}");
+            resposta.entity(new MensagemErro(ex.getMessage()));
         }
         return resposta.build();
     }
