@@ -62,7 +62,7 @@ public class TipoPreparoServico {
         try {
             tipoPreparoNegocio.alterar(tipoPreparoDTO);
             TipoPreparoDTO tipoPreparoDTOTemp = tipoPreparoNegocio.pesquisaCodigo(tipoPreparoDTO.getCodigo());
-            tipoPreparoDTOTemp.setLink("/grupoalimentar/codigo/"+tipoPreparoDTOTemp.getCodigo());
+            tipoPreparoDTOTemp.setLink("/tipodepreparo/codigo/"+tipoPreparoDTOTemp.getCodigo());
             resposta = Response.ok();
             resposta.entity(tipoPreparoDTOTemp);
         } catch (Exception ex) {

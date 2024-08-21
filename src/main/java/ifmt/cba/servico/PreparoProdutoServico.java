@@ -111,7 +111,7 @@ public class PreparoProdutoServico {
         try {
             List<PreparoProdutoDTO> listaPreparoProdutoDTO = preparoProdutoNegocio.pesquisaPorParteNome(nome);
             for (PreparoProdutoDTO preparoProdutoDTO : listaPreparoProdutoDTO) {
-                preparoProdutoDTO.setLink("/tipopreparo/codigo/" + preparoProdutoDTO.getCodigo());
+                preparoProdutoDTO.setLink("/preparoproduto/codigo/" + preparoProdutoDTO.getCodigo());
 
             };
             resposta = Response.ok();

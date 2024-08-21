@@ -7,6 +7,7 @@ import ifmt.cba.negocio.EntregadorNegocio;
 import ifmt.cba.persistencia.EntregadorDAO;
 import ifmt.cba.persistencia.FabricaEntityManager;
 import ifmt.cba.persistencia.PersistenciaException;
+import ifmt.cba.servico.util.MensagemErro;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
@@ -41,11 +42,13 @@ public class EntregadorServico {
         ResponseBuilder resposta;
         try {
             entregadorNegocio.inserir(entregadorDTO);
+            EntregadorDTO entregadorDTOTemp = entregadorNegocio.pesquisaParteNome(entregadorDTO.getNome()).get(0);
+            entregadorDTOTemp.setLink("/entregador/codigo/"+entregadorDTOTemp.getCodigo());
             resposta = Response.ok();
-            resposta.entity(entregadorNegocio.pesquisaParteNome(entregadorDTO.getNome()));
+            resposta.entity(entregadorDTOTemp);
         } catch (Exception ex) {
             resposta = Response.status(400);
-            resposta.entity("{\"erro\": \"" + ex.getMessage() + "\"}");
+            resposta.entity(new MensagemErro(ex.getMessage()));
         }
         return resposta.build();
     }
@@ -57,11 +60,13 @@ public class EntregadorServico {
         ResponseBuilder resposta;
         try {
             entregadorNegocio.alterar(entregadorDTO);
+            EntregadorDTO entregadorDTOTemp = entregadorNegocio.pesquisaCodigo(entregadorDTO.getCodigo());
+            entregadorDTOTemp.setLink("/entregador/codigo/"+entregadorDTOTemp.getCodigo());
             resposta = Response.ok();
-            resposta.entity(entregadorNegocio.pesquisaCodigo(entregadorDTO.getCodigo()));
+            resposta.entity(entregadorDTOTemp);
         } catch (Exception ex) {
             resposta = Response.status(400);
-            resposta.entity("{\"erro\": \"" + ex.getMessage() + "\"}");
+            resposta.entity(new MensagemErro(ex.getMessage()));
         }
         return resposta.build();
     }
@@ -73,10 +78,10 @@ public class EntregadorServico {
         ResponseBuilder resposta;
         try {
             entregadorNegocio.excluir(codigo);
-            resposta = Response.ok();
+            resposta = Response.noContent();
         } catch (Exception ex) {
             resposta = Response.status(400);
-            resposta.entity("{\"erro\": \""+ex.getMessage()+"\"}");
+            resposta.entity(new MensagemErro(ex.getMessage()));
         }
         return resposta.build();
     }
@@ -88,11 +93,12 @@ public class EntregadorServico {
         ResponseBuilder resposta;
         try {
             EntregadorDTO entregadorDTO = entregadorNegocio.pesquisaCodigo(codigo);
+            entregadorDTO.setLink("/entregador/codigo/"+entregadorDTO.getCodigo());
             resposta = Response.ok();
             resposta.entity(entregadorDTO);
         } catch (Exception ex) {
             resposta = Response.status(400);
-            resposta.entity("{\"erro\": \""+ex.getMessage()+"\"}");
+            resposta.entity(new MensagemErro(ex.getMessage()));
         }
         return resposta.build();
     }
@@ -104,11 +110,14 @@ public class EntregadorServico {
         ResponseBuilder resposta;
         try {
             List<EntregadorDTO> listaEntregadorDTO = entregadorNegocio.pesquisaParteNome(nome);
+            for (EntregadorDTO entregadorDTO : listaEntregadorDTO){
+                entregadorDTO.setLink("/entregador/codigo/"+entregadorDTO.getCodigo());
+            }
             resposta = Response.ok();
             resposta.entity(listaEntregadorDTO);
         } catch (Exception ex) {
             resposta = Response.status(400);
-            resposta.entity("{\"erro\": \""+ex.getMessage()+"\"}");
+            resposta.entity(new MensagemErro(ex.getMessage()));
         }
         return resposta.build();
     }

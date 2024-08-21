@@ -190,28 +190,6 @@ public class PedidoServico {
         return resposta.build();
     }
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     @GET
     @Path("/dataproducao")
     @Produces(MediaType.APPLICATION_JSON)
