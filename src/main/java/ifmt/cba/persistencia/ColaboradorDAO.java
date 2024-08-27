@@ -3,6 +3,7 @@ package ifmt.cba.persistencia;
 import java.util.List;
 import ifmt.cba.entity.Colaborador;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.Query;
 
 public class ColaboradorDAO extends DAO<Colaborador> {
@@ -24,17 +25,20 @@ public class ColaboradorDAO extends DAO<Colaborador> {
     }
 
     public Colaborador buscarPorCPF(String CPF) throws PersistenciaException {
-        Colaborador colaborador = null;
         try {
             Query query = this.entityManager
                     .createQuery("SELECT c FROM Colaborador c WHERE UPPER(c.CPF) = :pCPF");
             query.setParameter("pCPF", CPF.toUpperCase().trim());
-            colaborador = (Colaborador) query.getSingleResult();
+            return (Colaborador) query.getSingleResult();
+        } catch (NoResultException e) {
+            // Tratar a ausência de resultados
+            return null;
         } catch (Exception ex) {
+            // Tratar outras exceções
             throw new PersistenciaException("Erro na selecao por CPF - " + ex.getMessage());
-        }
-        return colaborador;
+        } 
     }
+    
 
     @SuppressWarnings("unchecked")
     public List<Colaborador> buscarPorParteNome(String nome) throws PersistenciaException {
