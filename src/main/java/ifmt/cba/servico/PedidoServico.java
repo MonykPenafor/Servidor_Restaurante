@@ -71,7 +71,7 @@ public class PedidoServico {
         try {
             pedidoNegocio.alterar(pedidoDTO);
             PedidoDTO pedidoDTOTemp = pedidoNegocio.pesquisaCodigo(pedidoDTO.getCodigo());
-            pedidoDTOTemp.setLink("/pedido/codigo" + pedidoDTO.getCodigo());
+            pedidoDTOTemp.setLink("/pedido/codigo/" + pedidoDTO.getCodigo());
             resposta = Response.ok();
             resposta.entity(pedidoDTOTemp);
         } catch (Exception ex) {
@@ -105,7 +105,7 @@ public class PedidoServico {
         try {
             pedidoNegocio.mudarPedidoParaProducao(pedidoDTO);
             PedidoDTO pedidoDTOTemp = pedidoNegocio.pesquisaCodigo(pedidoDTO.getCodigo());
-            pedidoDTOTemp.setLink("/pedido/codigo" + pedidoDTO.getCodigo());
+            pedidoDTOTemp.setLink("/pedido/codigo/" + pedidoDTO.getCodigo());
             
             resposta = Response.ok();
             resposta.entity(pedidoDTOTemp);
@@ -125,7 +125,7 @@ public class PedidoServico {
         try {
             pedidoNegocio.mudarPedidoParaPronto(pedidoDTO);
             PedidoDTO pedidoDTOTemp = pedidoNegocio.pesquisaCodigo(pedidoDTO.getCodigo());
-            pedidoDTOTemp.setLink("/pedido/codigo" + pedidoDTO.getCodigo());
+            pedidoDTOTemp.setLink("/pedido/codigo/" + pedidoDTO.getCodigo());
             resposta = Response.ok();
             resposta.entity(pedidoDTOTemp);
         } catch (Exception ex) {
@@ -144,7 +144,7 @@ public class PedidoServico {
         try {
             pedidoNegocio.mudarPedidoParaEntrega(pedidoDTO);
             PedidoDTO pedidoDTOTemp = pedidoNegocio.pesquisaCodigo(pedidoDTO.getCodigo());
-            pedidoDTOTemp.setLink("/pedido/codigo" + pedidoDTO.getCodigo());
+            pedidoDTOTemp.setLink("/pedido/codigo/" + pedidoDTO.getCodigo());
             resposta = Response.ok();
             resposta.entity(pedidoDTOTemp);
         } catch (Exception ex) {
@@ -163,7 +163,7 @@ public class PedidoServico {
         try {
             pedidoNegocio.mudarPedidoParaConcluido(pedidoDTO);
             PedidoDTO pedidoDTOTemp = pedidoNegocio.pesquisaCodigo(pedidoDTO.getCodigo());
-            pedidoDTOTemp.setLink("/pedido/codigo" + pedidoDTO.getCodigo());
+            pedidoDTOTemp.setLink("/pedido/codigo/" + pedidoDTO.getCodigo());
             resposta = Response.ok();
             resposta.entity(pedidoDTOTemp);
         } catch (Exception ex) {
@@ -180,7 +180,7 @@ public class PedidoServico {
         ResponseBuilder resposta;
         try {
             PedidoDTO pedidoDTO = pedidoNegocio.pesquisaCodigo(codigo);
-            pedidoDTO.setLink("/pedido/codigo" + pedidoDTO.getCodigo());
+            pedidoDTO.setLink("/pedido/codigo/" + pedidoDTO.getCodigo());
             resposta = Response.ok();
             resposta.entity(pedidoDTO);
         } catch (Exception ex) {
