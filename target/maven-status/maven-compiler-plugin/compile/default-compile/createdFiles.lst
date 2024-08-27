@@ -37,6 +37,7 @@ ifmt\cba\execucao\AppInserirCliente.class
 ifmt\cba\execucao\AppInserirGrupoAlimentar.class
 ifmt\cba\dto\PedidoDTO.class
 ifmt\cba\persistencia\PreparoProdutoDAO.class
+ifmt\cba\servico\OrdemProducaoServico.class
 ifmt\cba\execucao\AppInserirProduto.class
 ifmt\cba\entity\PreparoProduto.class
 ifmt\cba\dto\MovimentoEstoqueDTO.class
