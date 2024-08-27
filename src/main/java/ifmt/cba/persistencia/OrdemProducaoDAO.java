@@ -4,9 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import ifmt.cba.dto.EstadoOrdemProducaoDTO;
-import ifmt.cba.dto.EstadoPedidoDTO;
 import ifmt.cba.entity.OrdemProducao;
-import ifmt.cba.entity.Pedido;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 
