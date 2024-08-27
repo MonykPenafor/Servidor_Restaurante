@@ -24,7 +24,6 @@ import jakarta.ws.rs.core.Response.ResponseBuilder;
 public class BairroServico {
 
     private static BairroNegocio bairroNegocio;
-
     private static BairroDAO bairroDAO;
 
     static {
@@ -90,7 +89,7 @@ public class BairroServico {
     @GET
     @Path("/codigo/{codigo}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response buscarBairroPorCodigo(@PathParam("codigo") int codigo) {
+    public Response buscarPorCodigo(@PathParam("codigo") int codigo) {
         ResponseBuilder resposta;
         try {
             BairroDTO bairroDTO = bairroNegocio.pesquisaCodigo(codigo);
@@ -107,7 +106,7 @@ public class BairroServico {
     @GET
     @Path("/nome/{nome}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response buscarBairroPorNome(@PathParam("nome") String nome) {
+    public Response buscarPorNome(@PathParam("nome") String nome) {
         ResponseBuilder resposta;
         try {
             List<BairroDTO> listaBairroDTO = bairroNegocio.pesquisaParteNome(nome);

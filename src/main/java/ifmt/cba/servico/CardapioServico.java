@@ -103,7 +103,7 @@ public class CardapioServico {
     @GET
     @Path("/nome/{nome}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response buscarProdutoPorNome(@PathParam("nome") String nome) {
+    public Response buscarPorNome(@PathParam("nome") String nome) {
         ResponseBuilder resposta;
         try {
             CardapioDTO cardapioDTO = cardapioNegocio.pesquisaPorNome(nome).get(0);
