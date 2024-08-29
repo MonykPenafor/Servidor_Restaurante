@@ -113,6 +113,15 @@ public class RegistroEstoqueNegocio {
 		}
 	}
 
+
+	public List<RegistroEstoqueDTO> buscarPorMovimentoEPeriodo(MovimentoEstoqueDTO movimento, LocalDate dataInicial, LocalDate dataFinal) throws NegocioException {
+		try {
+			return this.toDTOAll(registroDAO.buscarPorMovimentoEPeriodo(movimento, dataInicial, dataFinal));
+		} catch (PersistenciaException ex) {
+			throw new NegocioException("Erro ao pesquisar registro de estoque por tipo de movimento e data - " + ex.getMessage());
+		}
+	}
+
 	public List<RegistroEstoqueDTO> buscarPorProduto(Produto produto) throws NegocioException {
 		try {
 			return this.toDTOAll(registroDAO.buscarPorProduto(produto));
