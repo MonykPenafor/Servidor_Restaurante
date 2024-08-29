@@ -57,6 +57,21 @@ public class RegistroEstoqueDAO extends DAO<RegistroEstoque> {
     }
 
     @SuppressWarnings("unchecked")
+    public List<RegistroEstoque> buscarPorDescartadosEData(LocalDate dataInicial, LocalDate dataFinal) throws PersistenciaException {
+        List<RegistroEstoque> listaRegistro = null;
+        try {
+            Query query = this.entityManager
+                    .createQuery("SELECT re FROM RegistroEstoque re WHERE (re.movimento = 'VENCIMENTO') OR (re.movimento = 'DANIFICADO') AND re.data >= :pDataInicial AND re.data <= :pDataFinal ORDER BY re.data DESC");
+            query.setParameter("pDataInicial", dataInicial);
+            query.setParameter("pDataFinal", dataFinal);
+            listaRegistro = query.getResultList();
+        } catch (Exception ex) {
+            throw new PersistenciaException("Erro na selecao por movimento do registro de estoque - " + ex.getMessage());
+        }
+        return listaRegistro;
+    }
+
+    @SuppressWarnings("unchecked")
     public List<RegistroEstoque> buscarPorProduto(Produto produto) throws PersistenciaException {
         List<RegistroEstoque> listaRegistro = null;
         try {

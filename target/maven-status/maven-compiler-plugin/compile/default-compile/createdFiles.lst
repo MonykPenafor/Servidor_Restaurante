@@ -68,6 +68,7 @@ ifmt\cba\entity\RegistroEstoque.class
 ifmt\cba\servico\CardapioServico.class
 ifmt\cba\execucao\AppAlterarPedido.class
 ifmt\cba\negocio\ClienteNegocio.class
+ifmt\cba\servico\EstoqueServico.class
 ifmt\cba\negocio\ProdutoNegocio.class
 ifmt\cba\execucao\AppInserirOrdemProducao.class
 ifmt\cba\dto\PreparoProdutoDTO.class

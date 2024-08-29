@@ -13,6 +13,7 @@ import ifmt.cba.persistencia.FabricaEntityManager;
 import ifmt.cba.persistencia.ItemPedidoDAO;
 import ifmt.cba.persistencia.PedidoDAO;
 import ifmt.cba.persistencia.PersistenciaException;
+import ifmt.cba.servico.util.MensagemErro;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
@@ -51,11 +52,13 @@ public class PedidoServico {
         ResponseBuilder resposta;
         try {
             pedidoNegocio.inserir(pedidoDTO);
+            PedidoDTO pedidoDTOTemp = pedidoNegocio.pesquisaPorCliente(pedidoDTO.getCliente()).get(0);
+            pedidoDTOTemp.setLink("/pedido/codigo/" + pedidoDTOTemp.getCodigo());
             resposta = Response.ok();
-            resposta.entity(pedidoNegocio.pesquisaPorCliente(pedidoDTO.getCliente()).get(0));
+            resposta.entity(pedidoDTOTemp);
         } catch (Exception ex) {
             resposta = Response.status(400);
-            resposta.entity("{\"erro\": \"" + ex.getMessage() + "\"}");
+            resposta.entity(new MensagemErro(ex.getMessage()));
         }
         return resposta.build();
     }
@@ -67,11 +70,13 @@ public class PedidoServico {
         ResponseBuilder resposta;
         try {
             pedidoNegocio.alterar(pedidoDTO);
+            PedidoDTO pedidoDTOTemp = pedidoNegocio.pesquisaCodigo(pedidoDTO.getCodigo());
+            pedidoDTOTemp.setLink("/pedido/codigo" + pedidoDTO.getCodigo());
             resposta = Response.ok();
-            resposta.entity(pedidoNegocio.pesquisaCodigo(pedidoDTO.getCodigo()));
+            resposta.entity(pedidoDTOTemp);
         } catch (Exception ex) {
             resposta = Response.status(400);
-            resposta.entity("{\"erro\": \"" + ex.getMessage() + "\"}");
+            resposta.entity(new MensagemErro(ex.getMessage()));
         }
         return resposta.build();
     }
@@ -83,10 +88,10 @@ public class PedidoServico {
         ResponseBuilder resposta;
         try {
             pedidoNegocio.excluir(pedidoNegocio.pesquisaCodigo(codigo));
-            resposta = Response.ok();
+            resposta = Response.noContent();
         } catch (Exception ex) {
             resposta = Response.status(400);
-            resposta.entity("{\"erro\": \"" + ex.getMessage() + "\"}");
+            resposta.entity(new MensagemErro(ex.getMessage()));
         }
         return resposta.build();
     }
@@ -99,11 +104,14 @@ public class PedidoServico {
         ResponseBuilder resposta;
         try {
             pedidoNegocio.mudarPedidoParaProducao(pedidoDTO);
+            PedidoDTO pedidoDTOTemp = pedidoNegocio.pesquisaCodigo(pedidoDTO.getCodigo());
+            pedidoDTOTemp.setLink("/pedido/codigo" + pedidoDTO.getCodigo());
+            
             resposta = Response.ok();
-            resposta.entity(pedidoNegocio.pesquisaCodigo(pedidoDTO.getCodigo()));
+            resposta.entity(pedidoDTOTemp);
         } catch (Exception ex) {
             resposta = Response.status(400);
-            resposta.entity("{\"erro\": \"" + ex.getMessage() + "\"}");
+            resposta.entity(new MensagemErro(ex.getMessage()));
         }
         return resposta.build();
     }
@@ -116,11 +124,13 @@ public class PedidoServico {
         ResponseBuilder resposta;
         try {
             pedidoNegocio.mudarPedidoParaPronto(pedidoDTO);
+            PedidoDTO pedidoDTOTemp = pedidoNegocio.pesquisaCodigo(pedidoDTO.getCodigo());
+            pedidoDTOTemp.setLink("/pedido/codigo" + pedidoDTO.getCodigo());
             resposta = Response.ok();
-            resposta.entity(pedidoNegocio.pesquisaCodigo(pedidoDTO.getCodigo()));
+            resposta.entity(pedidoDTOTemp);
         } catch (Exception ex) {
             resposta = Response.status(400);
-            resposta.entity("{\"erro\": \"" + ex.getMessage() + "\"}");
+            resposta.entity(new MensagemErro(ex.getMessage()));
         }
         return resposta.build();
     }
@@ -133,11 +143,13 @@ public class PedidoServico {
         ResponseBuilder resposta;
         try {
             pedidoNegocio.mudarPedidoParaEntrega(pedidoDTO);
+            PedidoDTO pedidoDTOTemp = pedidoNegocio.pesquisaCodigo(pedidoDTO.getCodigo());
+            pedidoDTOTemp.setLink("/pedido/codigo" + pedidoDTO.getCodigo());
             resposta = Response.ok();
-            resposta.entity(pedidoNegocio.pesquisaCodigo(pedidoDTO.getCodigo()));
+            resposta.entity(pedidoDTOTemp);
         } catch (Exception ex) {
             resposta = Response.status(400);
-            resposta.entity("{\"erro\": \"" + ex.getMessage() + "\"}");
+            resposta.entity(new MensagemErro(ex.getMessage()));
         }
         return resposta.build();
     }
@@ -150,11 +162,13 @@ public class PedidoServico {
         ResponseBuilder resposta;
         try {
             pedidoNegocio.mudarPedidoParaConcluido(pedidoDTO);
+            PedidoDTO pedidoDTOTemp = pedidoNegocio.pesquisaCodigo(pedidoDTO.getCodigo());
+            pedidoDTOTemp.setLink("/pedido/codigo" + pedidoDTO.getCodigo());
             resposta = Response.ok();
-            resposta.entity(pedidoNegocio.pesquisaCodigo(pedidoDTO.getCodigo()));
+            resposta.entity(pedidoDTOTemp);
         } catch (Exception ex) {
             resposta = Response.status(400);
-            resposta.entity("{\"erro\": \"" + ex.getMessage() + "\"}");
+            resposta.entity(new MensagemErro(ex.getMessage()));
         }
         return resposta.build();
     }
@@ -166,11 +180,12 @@ public class PedidoServico {
         ResponseBuilder resposta;
         try {
             PedidoDTO pedidoDTO = pedidoNegocio.pesquisaCodigo(codigo);
+            pedidoDTO.setLink("/pedido/codigo" + pedidoDTO.getCodigo());
             resposta = Response.ok();
             resposta.entity(pedidoDTO);
         } catch (Exception ex) {
             resposta = Response.status(400);
-            resposta.entity("{\"erro\": \"" + ex.getMessage() + "\"}");
+            resposta.entity(new MensagemErro(ex.getMessage()));
         }
         return resposta.build();
     }
@@ -183,11 +198,14 @@ public class PedidoServico {
         try {
             DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             List<PedidoDTO> listaPedidoDTO = pedidoNegocio.pesquisaPorDataProducao(LocalDate.parse(dataInicial, formato), LocalDate.parse(dataFinal, formato));
+            for (PedidoDTO pedidoDTO : listaPedidoDTO){
+                pedidoDTO.setLink("/pedido/codigo/" + pedidoDTO.getCodigo());
+            }
             resposta = Response.ok();
             resposta.entity(listaPedidoDTO);
         } catch (Exception ex) {
             resposta = Response.status(400);
-            resposta.entity("{\"erro\": \"" + ex.getMessage() + "\"}");
+            resposta.entity(new MensagemErro(ex.getMessage()));
         }
         return resposta.build();
     }
@@ -199,11 +217,14 @@ public class PedidoServico {
         ResponseBuilder resposta;
         try {
             List<PedidoDTO> listaPedidoDTO = pedidoNegocio.pesquisaPorEstado(EstadoPedidoDTO.valueOf(estado));
+            for (PedidoDTO pedidoDTO : listaPedidoDTO){
+                pedidoDTO.setLink("/pedido/codigo/" + pedidoDTO.getCodigo());
+            }
             resposta = Response.ok();
             resposta.entity(listaPedidoDTO);
         } catch (Exception ex) {
             resposta = Response.status(400);
-            resposta.entity("{\"erro\": \"" + ex.getMessage() + "\"}");
+            resposta.entity(new MensagemErro(ex.getMessage()));
         }
         return resposta.build();
     }
@@ -216,11 +237,14 @@ public class PedidoServico {
         try {
             DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             List<PedidoDTO> listaPedidoDTO = pedidoNegocio.pesquisaPorEstadoEData(EstadoPedidoDTO.valueOf(estado), LocalDate.parse(data, formato));
+            for (PedidoDTO pedidoDTO : listaPedidoDTO){
+                pedidoDTO.setLink("/pedido/codigo/" + pedidoDTO.getCodigo());
+            }
             resposta = Response.ok();
             resposta.entity(listaPedidoDTO);
         } catch (Exception ex) {
             resposta = Response.status(400);
-            resposta.entity("{\"erro\": \"" + ex.getMessage() + "\"}");
+            resposta.entity(new MensagemErro(ex.getMessage()));
         }
         return resposta.build();
     }
@@ -232,11 +256,14 @@ public class PedidoServico {
         ResponseBuilder resposta;
         try {
             List<PedidoDTO> listaPedidoDTO = pedidoNegocio.pesquisaPorCliente(clienteDTO);
+            for (PedidoDTO pedidoDTO : listaPedidoDTO){
+                pedidoDTO.setLink("/pedido/codigo/" + pedidoDTO.getCodigo());
+            }
             resposta = Response.ok();
             resposta.entity(listaPedidoDTO);
         } catch (Exception ex) {
             resposta = Response.status(400);
-            resposta.entity("{\"erro\": \"" + ex.getMessage() + "\"}");
+            resposta.entity(new MensagemErro(ex.getMessage()));
         }
         return resposta.build();
     }

@@ -7,7 +7,7 @@ import java.util.List;
 import org.modelmapper.ModelMapper;
 
 import ifmt.cba.dto.MovimentoEstoqueDTO;
-import ifmt.cba.dto.ProdutoDTO;
+import ifmt.cba.dto.OrdemProducaoDTO;
 import ifmt.cba.dto.RegistroEstoqueDTO;
 import ifmt.cba.entity.Produto;
 import ifmt.cba.entity.RegistroEstoque;
@@ -19,11 +19,12 @@ public class RegistroEstoqueNegocio {
 
     private ModelMapper modelMapper;
 	private RegistroEstoqueDAO registroDAO;
-	private ProdutoNegocio produtoNegocio;
+	private ProdutoDAO produtoDAO;
+
 	
 	public RegistroEstoqueNegocio(RegistroEstoqueDAO registroDAO, ProdutoDAO produtoDAO) {
 		this.registroDAO = registroDAO;
-		this.produtoNegocio = new ProdutoNegocio(produtoDAO);
+		this.produtoDAO = produtoDAO;
 		this.modelMapper = new ModelMapper();
 	}
 
@@ -38,13 +39,15 @@ public class RegistroEstoqueNegocio {
 
 		try {
 			registroDAO.beginTransaction();
-			ProdutoDTO produtoDTO = produtoNegocio.pesquisaCodigo(registroEstoque.getProduto().getCodigo());
+			Produto produtoTemp = produtoDAO.buscarPorCodigo(registroEstoque.getProduto().getCodigo());
 			if(registroEstoque.getMovimento() == MovimentoEstoqueDTO.COMPRA){
-				produtoDTO.setEstoque(produtoDTO.getEstoque() + registroEstoque.getQuantidade());
+				produtoTemp.setEstoque(produtoTemp.getEstoque() + registroEstoque.getQuantidade());
 			}else{
-				produtoDTO.setEstoque(produtoDTO.getEstoque() - registroEstoque.getQuantidade());
+				produtoTemp.setEstoque(produtoTemp.getEstoque() - registroEstoque.getQuantidade());
 			}
-			produtoNegocio.alterar(produtoDTO);
+			produtoDAO.beginTransaction();
+			produtoDAO.alterar(produtoTemp);
+			produtoDAO.commitTransaction();
 			registroDAO.incluir(registroEstoque);
 			registroDAO.commitTransaction();
 		} catch (PersistenciaException ex) {
@@ -61,14 +64,16 @@ public class RegistroEstoqueNegocio {
 				throw new NegocioException("Nao existe esse registro de estoque");
 			}
 			registroDAO.beginTransaction();
-			ProdutoDTO produtoDTO = produtoNegocio.pesquisaCodigo(registroEstoque.getProduto().getCodigo());
+			Produto produtoTemp = produtoDAO.buscarPorCodigo(registroEstoque.getProduto().getCodigo());
 			if(registroEstoque.getMovimento() == MovimentoEstoqueDTO.COMPRA){
-				produtoDTO.setEstoque(produtoDTO.getEstoque() - registroEstoque.getQuantidade());
+				produtoTemp.setEstoque(produtoTemp.getEstoque() - registroEstoque.getQuantidade());
 			}else{
-				produtoDTO.setEstoque(produtoDTO.getEstoque() + registroEstoque.getQuantidade());
+				produtoTemp.setEstoque(produtoTemp.getEstoque() + registroEstoque.getQuantidade());
 			}
-			produtoNegocio.alterar(produtoDTO);
-			registroDAO.excluir(registroEstoque);
+			produtoDAO.beginTransaction();
+			produtoDAO.alterar(produtoTemp);
+			produtoDAO.commitTransaction();
+			registroDAO.incluir(registroEstoque);
 			registroDAO.commitTransaction();
 		} catch (PersistenciaException ex) {
 			registroDAO.rollbackTransaction();
@@ -97,11 +102,11 @@ public class RegistroEstoqueNegocio {
 		}
     }
 
-	public List<RegistroEstoqueDTO> buscarPorMovimentoEData(MovimentoEstoqueDTO movimento, LocalDate data) throws NegocioException {
+	public List<RegistroEstoqueDTO> buscarPorDescartadosEData(LocalDate dataInicial, LocalDate dataFinal) throws NegocioException {
 		try {
-			return this.toDTOAll(registroDAO.buscarPorMovimentoEData(movimento, data));
+			return this.toDTOAll(registroDAO.buscarPorDescartadosEData(dataInicial, dataFinal));
 		} catch (PersistenciaException ex) {
-			throw new NegocioException("Erro ao pesquisar registro de estoque por tipo de movimento e data - " + ex.getMessage());
+			throw new NegocioException("Erro ao pesquisar registro de estoque por descarte e periodo de data - " + ex.getMessage());
 		}
 	}
 
