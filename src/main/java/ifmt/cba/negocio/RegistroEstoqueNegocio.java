@@ -7,7 +7,6 @@ import java.util.List;
 import org.modelmapper.ModelMapper;
 
 import ifmt.cba.dto.MovimentoEstoqueDTO;
-import ifmt.cba.dto.ProdutoDTO;
 import ifmt.cba.dto.RegistroEstoqueDTO;
 import ifmt.cba.entity.Produto;
 import ifmt.cba.entity.RegistroEstoque;
@@ -19,15 +18,16 @@ public class RegistroEstoqueNegocio {
 
     private ModelMapper modelMapper;
 	private RegistroEstoqueDAO registroDAO;
-	private ProdutoNegocio produtoNegocio;
+	private ProdutoDAO produtoDAO;
+
 	
 	public RegistroEstoqueNegocio(RegistroEstoqueDAO registroDAO, ProdutoDAO produtoDAO) {
 		this.registroDAO = registroDAO;
-		this.produtoNegocio = new ProdutoNegocio(produtoDAO);
+		this.produtoDAO = produtoDAO;
 		this.modelMapper = new ModelMapper();
 	}
 
-	public void inserir(RegistroEstoqueDTO registroEstoqueDTO) throws NegocioException {
+	public int inserir(RegistroEstoqueDTO registroEstoqueDTO) throws NegocioException {
 
 		RegistroEstoque registroEstoque = this.toEntity(registroEstoqueDTO);
 		String mensagemErros = registroEstoque.validar();
@@ -38,20 +38,25 @@ public class RegistroEstoqueNegocio {
 
 		try {
 			registroDAO.beginTransaction();
-			ProdutoDTO produtoDTO = produtoNegocio.pesquisaCodigo(registroEstoque.getProduto().getCodigo());
+			Produto produtoTemp = produtoDAO.buscarPorCodigo(registroEstoque.getProduto().getCodigo());
 			if(registroEstoque.getMovimento() == MovimentoEstoqueDTO.COMPRA){
-				produtoDTO.setEstoque(produtoDTO.getEstoque() + registroEstoque.getQuantidade());
+				produtoTemp.setEstoque(produtoTemp.getEstoque() + registroEstoque.getQuantidade());
 			}else{
-				produtoDTO.setEstoque(produtoDTO.getEstoque() - registroEstoque.getQuantidade());
+				produtoTemp.setEstoque(produtoTemp.getEstoque() - registroEstoque.getQuantidade());
 			}
-			produtoNegocio.alterar(produtoDTO);
-			registroDAO.incluir(registroEstoque);
+
+			produtoDAO.beginTransaction();
+			produtoDAO.alterar(produtoTemp);
+			produtoDAO.commitTransaction();
+			int id = (int)registroDAO.incluir(registroEstoque);
 			registroDAO.commitTransaction();
+			return id;
 		} catch (PersistenciaException ex) {
 			registroDAO.rollbackTransaction();
 			throw new NegocioException("Erro ao incluir registro de estoque - " + ex.getMessage());
 		}
 	}
+
 
 	public void excluir(RegistroEstoqueDTO registroEstoqueDTO) throws NegocioException {
 
@@ -61,13 +66,15 @@ public class RegistroEstoqueNegocio {
 				throw new NegocioException("Nao existe esse registro de estoque");
 			}
 			registroDAO.beginTransaction();
-			ProdutoDTO produtoDTO = produtoNegocio.pesquisaCodigo(registroEstoque.getProduto().getCodigo());
+			Produto produtoTemp = produtoDAO.buscarPorCodigo(registroEstoque.getProduto().getCodigo());
 			if(registroEstoque.getMovimento() == MovimentoEstoqueDTO.COMPRA){
-				produtoDTO.setEstoque(produtoDTO.getEstoque() - registroEstoque.getQuantidade());
+				produtoTemp.setEstoque(produtoTemp.getEstoque() - registroEstoque.getQuantidade());
 			}else{
-				produtoDTO.setEstoque(produtoDTO.getEstoque() + registroEstoque.getQuantidade());
+				produtoTemp.setEstoque(produtoTemp.getEstoque() + registroEstoque.getQuantidade());
 			}
-			produtoNegocio.alterar(produtoDTO);
+			produtoDAO.beginTransaction();
+			produtoDAO.alterar(produtoTemp);
+			produtoDAO.commitTransaction();
 			registroDAO.excluir(registroEstoque);
 			registroDAO.commitTransaction();
 		} catch (PersistenciaException ex) {
@@ -75,6 +82,7 @@ public class RegistroEstoqueNegocio {
 			throw new NegocioException("Erro ao excluir registro de estoque - " + ex.getMessage());
 		}
 	}
+
 
 	public RegistroEstoqueDTO pesquisaCodigo(int codigo) throws NegocioException {
 		try {
