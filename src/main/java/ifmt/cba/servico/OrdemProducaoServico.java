@@ -1,11 +1,16 @@
 package ifmt.cba.servico;
 
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 import ifmt.cba.dto.EstadoOrdemProducaoDTO;
+import ifmt.cba.dto.ItemOrdemProducaoDTO;
 import ifmt.cba.dto.OrdemProducaoDTO;
+import ifmt.cba.dto.PreparoProdutoDTO;
 import ifmt.cba.negocio.NegocioException;
 import ifmt.cba.negocio.OrdemProducaoNegocio;
 import ifmt.cba.persistencia.FabricaEntityManager;
@@ -62,7 +67,6 @@ public class OrdemProducaoServico {
         return resposta.build();
     }
 
-
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -96,17 +100,17 @@ public class OrdemProducaoServico {
         return resposta.build();
     }
 
-
-
     @GET
     @Path("/dataproducao")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response buscarPorDataProducao(@QueryParam ("dataInicial") String dataInicial, @QueryParam ("dataFinal") String dataFinal) {
+    public Response buscarPorDataProducao(@QueryParam("dataInicial") String dataInicial,
+            @QueryParam("dataFinal") String dataFinal) {
         ResponseBuilder resposta;
         try {
             DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            List<OrdemProducaoDTO> listaOrdemProducaoDTO = ordemProducaoNegocio.pesquisaPorDataProducao(LocalDate.parse(dataInicial, formato), LocalDate.parse(dataFinal, formato));
-            for (OrdemProducaoDTO ordemProducaoDTO : listaOrdemProducaoDTO){
+            List<OrdemProducaoDTO> listaOrdemProducaoDTO = ordemProducaoNegocio.pesquisaPorDataProducao(
+                    LocalDate.parse(dataInicial, formato), LocalDate.parse(dataFinal, formato));
+            for (OrdemProducaoDTO ordemProducaoDTO : listaOrdemProducaoDTO) {
                 ordemProducaoDTO.setLink("/ordemproducao/codigo/" + ordemProducaoDTO.getCodigo());
             }
             resposta = Response.ok();
@@ -121,23 +125,78 @@ public class OrdemProducaoServico {
     @GET
     @Path("/estadodata")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response buscarPorEstadoEDataProducao(@QueryParam ("dataInicial") String dataInicial, @QueryParam ("dataFinal") String dataFinal, @QueryParam ("estado") EstadoOrdemProducaoDTO estado) {
+    public Response buscarPorEstadoEDataProducao(@QueryParam("dataInicial") String dataInicial,
+            @QueryParam("dataFinal") String dataFinal, @QueryParam("estado") EstadoOrdemProducaoDTO estado) {
         ResponseBuilder resposta;
         try {
             DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            List<OrdemProducaoDTO> listaOrdemProducaoDTO = ordemProducaoNegocio.pesquisaPorEstadoEDataProcucao(estado, LocalDate.parse(dataInicial, formato), LocalDate.parse(dataFinal, formato));
-            for (OrdemProducaoDTO ordemProducaoDTO : listaOrdemProducaoDTO){
-                ordemProducaoDTO.setLink("/ordemproducao/codigo/" + ordemProducaoDTO.getCodigo());
+
+            List<OrdemProducaoDTO> listaOrdemProducaoDTO = ordemProducaoNegocio.pesquisaPorEstadoEDataProcucao(estado,
+                    LocalDate.parse(dataInicial, formato), LocalDate.parse(dataFinal, formato));
+
+            Map<String, float[]> mapaItens = new HashMap<>();
+            var valorTotalGeral = 0f;
+
+            for (OrdemProducaoDTO ordemProducaoDTO : listaOrdemProducaoDTO) {
+                for (ItemOrdemProducaoDTO item : ordemProducaoDTO.getListaItens()) {
+
+                    PreparoProdutoDTO preparoProduto = item.getPreparoProduto();
+                    String nomeItem = preparoProduto.getNome();
+                    var valorPreparo = preparoProduto.getValorPreparo();
+                    var custoUnidade = preparoProduto.getProduto().getCustoUnidade();
+                    var quantidadePorcao = item.getQuantidadePorcao();
+
+                    var valorProduto = custoUnidade * quantidadePorcao;
+                    var valorTotal = valorProduto + valorPreparo;
+
+                    valorTotalGeral += valorTotal;
+
+                    mapaItens.compute(nomeItem, (key, dados) -> {
+                        if (dados == null) {
+                            return new float[] { quantidadePorcao, 1, valorPreparo, valorProduto, valorTotal };
+                        } else {
+                            dados[0] += quantidadePorcao;
+                            dados[1] += 1;
+                            dados[2] += valorPreparo;
+                            dados[3] += valorProduto;
+                            dados[4] += valorTotal;
+                            return dados;
+                        }
+                    });
+                }
             }
+
+            Map<String, Map<String, Object>> mapaItensJson = new LinkedHashMap<>();
+
+            for (Map.Entry<String, float[]> entry : mapaItens.entrySet()) {
+                String nomeItem = entry.getKey();
+                float[] dados = entry.getValue();
+
+                Map<String, Object> itemData = new LinkedHashMap<>();
+                itemData.put("quantidadeItensPedidos", (int) dados[1]);
+                itemData.put("quantidadePorcoes", (int) dados[0]);
+                itemData.put("valorPreparoTotal", (float) dados[2]);
+                itemData.put("valorPorQuantidadeProduto", (float) dados[3]);
+                itemData.put("valorTotal", (float) dados[4]);
+
+                mapaItensJson.put(nomeItem, itemData);
+            }
+
+            Map<String, Object> relatorioFinal = new LinkedHashMap<>();
+            relatorioFinal.put("dataInicial", dataInicial);
+            relatorioFinal.put("dataFinal", dataFinal);
+            relatorioFinal.put("valorTotalGeral", valorTotalGeral);
+            relatorioFinal.put("items", mapaItensJson);
+
             resposta = Response.ok();
-            resposta.entity(listaOrdemProducaoDTO);
+            resposta.entity(relatorioFinal);
+
         } catch (Exception ex) {
             resposta = Response.status(400);
             resposta.entity(new MensagemErro(ex.getMessage()));
         }
         return resposta.build();
     }
-
 
 
     @PUT
@@ -158,9 +217,5 @@ public class OrdemProducaoServico {
         }
         return resposta.build();
     }
-
-
-
-
 
 }
