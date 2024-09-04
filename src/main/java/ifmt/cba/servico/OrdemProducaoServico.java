@@ -10,7 +10,6 @@ import java.util.stream.Collectors;
 
 
 import ifmt.cba.dto.EstadoOrdemProducaoDTO;
-import ifmt.cba.dto.GrupoAlimentarDTO;
 import ifmt.cba.dto.ItemOrdemProducaoDTO;
 import ifmt.cba.dto.OrdemProducaoDTO;
 import ifmt.cba.dto.PreparoProdutoDTO;
@@ -148,6 +147,24 @@ public class OrdemProducaoServico {
         return resposta.build();
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     @GET
     @Path("/codigo/{codigo}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -166,7 +183,7 @@ public class OrdemProducaoServico {
     }
 
     @GET
-    @Path("item/codigo/{codigo}")
+    @Path("/item/codigo/{codigo}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response buscarItemOrdemPorCodigo(@PathParam("codigo") int codigo) {
         ResponseBuilder resposta;
@@ -225,7 +242,7 @@ public class OrdemProducaoServico {
     @GET
     @Path("/estadodata")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response buscarPorEstadoEDataProducao(
+    public Response buscarProducoesPorPeriodoComCalculoDeValores(
         @QueryParam("dataInicial") String dataInicial,
         @QueryParam("dataFinal") String dataFinal, 
         @QueryParam("estado") EstadoOrdemProducaoDTO estado) {
@@ -233,8 +250,7 @@ public class OrdemProducaoServico {
         ResponseBuilder resposta;
         try {
 
-            List<OrdemProducaoDTO> listaOrdemProducaoDTO = ordemProducaoNegocio.pesquisaPorEstadoEDataProducao(estado,
-                    LocalDate.parse(dataInicial, formato), LocalDate.parse(dataFinal, formato));
+            List<OrdemProducaoDTO> listaOrdemProducaoDTO = ordemProducaoNegocio.pesquisaPorEstadoEDataProducao(estado, LocalDate.parse(dataInicial, formato), LocalDate.parse(dataFinal, formato));
 
             Map<String, float[]> mapaItens = new HashMap<>();
             var valorTotalGeral = 0f;
@@ -288,7 +304,7 @@ public class OrdemProducaoServico {
             relatorioFinal.put("dataInicial", dataInicial);
             relatorioFinal.put("dataFinal", dataFinal);
             relatorioFinal.put("valorTotalGeral", valorTotalGeral);
-            relatorioFinal.put("items", mapaItensJson);
+            relatorioFinal.put("itens", mapaItensJson);
 
             resposta = Response.ok();
             resposta.entity(relatorioFinal);
@@ -300,25 +316,6 @@ public class OrdemProducaoServico {
         return resposta.build();
     }
     
-    @PUT
-    @Path("/processar")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response processarOrdemProducao(OrdemProducaoDTO ordemProducaoDTO) {
-        ResponseBuilder resposta;
-        try {
-            ordemProducaoNegocio.processarOrdemProducao(ordemProducaoDTO);
-            OrdemProducaoDTO ordemProducaoDTOTemp = ordemProducaoNegocio.pesquisaCodigo(ordemProducaoDTO.getCodigo());
-            ordemProducaoDTOTemp.setLink("/ordemproducao/codigo/" + ordemProducaoDTO.getCodigo());
-            resposta = Response.ok();
-            resposta.entity(ordemProducaoDTOTemp);
-        } catch (Exception ex) {
-            resposta = Response.status(400);
-            resposta.entity(new MensagemErro(ex.getMessage()));
-        }
-        return resposta.build();
-    }
-
     @GET
     @Path("/itens")
     @Produces(MediaType.APPLICATION_JSON)
@@ -356,10 +353,28 @@ public class OrdemProducaoServico {
                 (e1, e2) -> e1,
                 LinkedHashMap::new));
 
-
             resposta = Response.ok();
             resposta.entity(itensOrdenados);
 
+        } catch (Exception ex) {
+            resposta = Response.status(400);
+            resposta.entity(new MensagemErro(ex.getMessage()));
+        }
+        return resposta.build();
+    }
+
+    @PUT
+    @Path("/processar")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response processarOrdemProducao(OrdemProducaoDTO ordemProducaoDTO) {
+        ResponseBuilder resposta;
+        try {
+            ordemProducaoNegocio.processarOrdemProducao(ordemProducaoDTO);
+            OrdemProducaoDTO ordemProducaoDTOTemp = ordemProducaoNegocio.pesquisaCodigo(ordemProducaoDTO.getCodigo());
+            ordemProducaoDTOTemp.setLink("/ordemproducao/codigo/" + ordemProducaoDTO.getCodigo());
+            resposta = Response.ok();
+            resposta.entity(ordemProducaoDTOTemp);
         } catch (Exception ex) {
             resposta = Response.status(400);
             resposta.entity(new MensagemErro(ex.getMessage()));

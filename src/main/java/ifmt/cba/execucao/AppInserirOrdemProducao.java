@@ -66,5 +66,52 @@ public class AppInserirOrdemProducao {
          } catch (PersistenciaException | NegocioException e) {
             e.printStackTrace();
         }
+
+        try {
+            OrdemProducaoDAO ordemProducaoDAO = new OrdemProducaoDAO(FabricaEntityManager.getEntityManagerProducao());
+            ItemOrdemProducaoDAO itemOrdemProducaoDAO = new ItemOrdemProducaoDAO(FabricaEntityManager.getEntityManagerProducao());
+            PreparoProdutoDAO preparoProdutoDAO = new PreparoProdutoDAO(FabricaEntityManager.getEntityManagerProducao());
+            CardapioDAO cardapioDAO = new CardapioDAO(FabricaEntityManager.getEntityManagerProducao());
+
+            OrdemProducaoNegocio ordemProducaoNegocio = new OrdemProducaoNegocio(ordemProducaoDAO, itemOrdemProducaoDAO);
+            PreparoProdutoNegocio preparoProdutoNegocio = new PreparoProdutoNegocio(preparoProdutoDAO);
+            CardapioNegocio cardapioNegocio = new CardapioNegocio(cardapioDAO);
+
+            CardapioDTO cardapioDTO = cardapioNegocio.pesquisaPorNome("Carnes vermelhas").get(0);
+            OrdemProducaoDTO ordemProducaoDTO = new OrdemProducaoDTO();
+            List<ItemOrdemProducaoDTO> listaItens = new ArrayList<ItemOrdemProducaoDTO>();
+            ItemOrdemProducaoDTO itemOrdemProducaoDTO = new ItemOrdemProducaoDTO();
+            PreparoProdutoDTO preparoProdutoDTO = preparoProdutoNegocio.pesquisaPorCodigo(1); //arroz cozido
+            itemOrdemProducaoDTO.setPreparoProduto(preparoProdutoDTO);
+            itemOrdemProducaoDTO.setQuantidadePorcao(13);
+            listaItens.add(itemOrdemProducaoDTO);
+
+            itemOrdemProducaoDTO = new ItemOrdemProducaoDTO();
+            preparoProdutoDTO = preparoProdutoNegocio.pesquisaPorCodigo(2); //costela suina
+            itemOrdemProducaoDTO.setPreparoProduto(preparoProdutoDTO);
+            itemOrdemProducaoDTO.setQuantidadePorcao(12);
+            listaItens.add(itemOrdemProducaoDTO);
+
+            itemOrdemProducaoDTO = new ItemOrdemProducaoDTO();
+            preparoProdutoDTO = preparoProdutoNegocio.pesquisaPorCodigo(3); //alcatra bovina grelhada
+            itemOrdemProducaoDTO.setPreparoProduto(preparoProdutoDTO);
+            itemOrdemProducaoDTO.setQuantidadePorcao(11);
+            listaItens.add(itemOrdemProducaoDTO);
+
+            ordemProducaoDTO.setCardapio(cardapioDTO);
+            ordemProducaoDTO.setDataProducao(LocalDate.now());
+            ordemProducaoDTO.setEstado(EstadoOrdemProducaoDTO.REGISTRADA);
+            ordemProducaoDTO.setListaItens(listaItens);
+
+            ordemProducaoNegocio.inserir(ordemProducaoDTO);
+
+        }
+        catch (PersistenciaException | NegocioException e) {
+            e.printStackTrace();
+        }
+
+
+
+
     }
 }
