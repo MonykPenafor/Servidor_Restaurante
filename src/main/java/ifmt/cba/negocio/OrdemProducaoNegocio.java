@@ -169,7 +169,7 @@ public class OrdemProducaoNegocio {
 		}
 	}
 
-	public List<OrdemProducaoDTO> pesquisaPorEstadoEDataProcucao(EstadoOrdemProducaoDTO estado, LocalDate dataInicial, LocalDate dataFinal) throws NegocioException {
+	public List<OrdemProducaoDTO> pesquisaPorEstadoEDataProducao(EstadoOrdemProducaoDTO estado, LocalDate dataInicial, LocalDate dataFinal) throws NegocioException {
 		try {
 			return this.toDTOAll(ordemProducaoDAO.buscarPorEstadoEDataProducao(estado, dataInicial, dataFinal));
 		} catch (PersistenciaException ex) {
