@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 
 
 import ifmt.cba.dto.EstadoOrdemProducaoDTO;
+import ifmt.cba.dto.GrupoAlimentarDTO;
 import ifmt.cba.dto.ItemOrdemProducaoDTO;
 import ifmt.cba.dto.OrdemProducaoDTO;
 import ifmt.cba.dto.PreparoProdutoDTO;
@@ -49,7 +50,6 @@ public class OrdemProducaoServico {
             e.printStackTrace();
         }
     }
-
     
     DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
@@ -99,25 +99,6 @@ public class OrdemProducaoServico {
         return resposta.build();
     }
 
-    @PUT
-    @Path("/processar")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response processarOrdemProducao(OrdemProducaoDTO ordemProducaoDTO) {
-        ResponseBuilder resposta;
-        try {
-            ordemProducaoNegocio.processarOrdemProducao(ordemProducaoDTO);
-            OrdemProducaoDTO ordemProducaoDTOTemp = ordemProducaoNegocio.pesquisaCodigo(ordemProducaoDTO.getCodigo());
-            ordemProducaoDTOTemp.setLink("/ordemproducao/codigo/" + ordemProducaoDTO.getCodigo());
-            resposta = Response.ok();
-            resposta.entity(ordemProducaoDTOTemp);
-        } catch (Exception ex) {
-            resposta = Response.status(400);
-            resposta.entity(new MensagemErro(ex.getMessage()));
-        }
-        return resposta.build();
-    }
-
     @DELETE
     @Path("/{codigo}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -126,6 +107,74 @@ public class OrdemProducaoServico {
         try {
             ordemProducaoNegocio.excluir(ordemProducaoNegocio.pesquisaCodigo(codigo));
             resposta = Response.noContent();
+        } catch (Exception ex) {
+            resposta = Response.status(400);
+            resposta.entity(new MensagemErro(ex.getMessage()));
+        }
+        return resposta.build();
+    }
+
+    @PUT
+    @Path("/item")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response alterarItemOrdem(ItemOrdemProducaoDTO itemOrdemProducaoDTO) {
+        ResponseBuilder resposta;
+        try {
+            ordemProducaoNegocio.alterarItemOrdem(itemOrdemProducaoDTO);
+            ItemOrdemProducaoDTO itemOrdemProducaoDTOTemp = ordemProducaoNegocio.pesquisaItemOrdemCodigo(itemOrdemProducaoDTO.getCodigo());
+            itemOrdemProducaoDTOTemp.setLink("/ordemproducao/item/codigo/" + itemOrdemProducaoDTO.getCodigo());
+            resposta = Response.ok();
+            resposta.entity(itemOrdemProducaoDTO);
+        } catch (Exception ex) {
+            resposta = Response.status(400);
+            resposta.entity(new MensagemErro(ex.getMessage()));
+        }
+        return resposta.build();
+    }
+
+    @DELETE
+    @Path("/item/{codigo}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response excluirItemOrdem(@PathParam("codigo") int codigo) {
+        ResponseBuilder resposta;
+        try {
+            ordemProducaoNegocio.excluirItemOrdem(ordemProducaoNegocio.pesquisaItemOrdemCodigo(codigo));
+            resposta = Response.noContent();
+        } catch (Exception ex) {
+            resposta = Response.status(400);
+            resposta.entity(new MensagemErro(ex.getMessage()));
+        }
+        return resposta.build();
+    }
+
+    @GET
+    @Path("/codigo/{codigo}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response buscarPorCodigo(@PathParam("codigo") int codigo) {
+        ResponseBuilder resposta;
+        try {
+            OrdemProducaoDTO ordemProducaoDTO = ordemProducaoNegocio.pesquisaCodigo(codigo);
+            ordemProducaoDTO.setLink("/ordemproducao/codigo/" + ordemProducaoDTO.getCodigo());
+            resposta = Response.ok();
+            resposta.entity(ordemProducaoDTO);
+        } catch (Exception ex) {
+            resposta = Response.status(400);
+            resposta.entity(new MensagemErro(ex.getMessage()));
+        }
+        return resposta.build();
+    }
+
+    @GET
+    @Path("item/codigo/{codigo}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response buscarItemOrdemPorCodigo(@PathParam("codigo") int codigo) {
+        ResponseBuilder resposta;
+        try {
+            ItemOrdemProducaoDTO itemOrdemProducaoDTO = ordemProducaoNegocio.pesquisaItemOrdemCodigo(codigo);
+            itemOrdemProducaoDTO.setLink("/ordemproducao/item/codigo/" + itemOrdemProducaoDTO.getCodigo());
+            resposta = Response.ok();
+            resposta.entity(itemOrdemProducaoDTO);
         } catch (Exception ex) {
             resposta = Response.status(400);
             resposta.entity(new MensagemErro(ex.getMessage()));
@@ -142,6 +191,25 @@ public class OrdemProducaoServico {
         try {
             List<OrdemProducaoDTO> listaOrdemProducaoDTO = ordemProducaoNegocio.pesquisaPorDataProducao(
                     LocalDate.parse(dataInicial, formato), LocalDate.parse(dataFinal, formato));
+            for (OrdemProducaoDTO ordemProducaoDTO : listaOrdemProducaoDTO) {
+                ordemProducaoDTO.setLink("/ordemproducao/codigo/" + ordemProducaoDTO.getCodigo());
+            }
+            resposta = Response.ok();
+            resposta.entity(listaOrdemProducaoDTO);
+        } catch (Exception ex) {
+            resposta = Response.status(400);
+            resposta.entity(new MensagemErro(ex.getMessage()));
+        }
+        return resposta.build();
+    }
+
+    @GET
+    @Path("/estado")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response buscarPorEstado(@QueryParam("estado") EstadoOrdemProducaoDTO estado) {
+        ResponseBuilder resposta;
+        try {
+            List<OrdemProducaoDTO> listaOrdemProducaoDTO = ordemProducaoNegocio.pesquisaPorEstado(estado);
             for (OrdemProducaoDTO ordemProducaoDTO : listaOrdemProducaoDTO) {
                 ordemProducaoDTO.setLink("/ordemproducao/codigo/" + ordemProducaoDTO.getCodigo());
             }
@@ -231,27 +299,25 @@ public class OrdemProducaoServico {
         }
         return resposta.build();
     }
-
-
-
-    @GET
-    @Path("/codigo/{codigo}")
+    
+    @PUT
+    @Path("/processar")
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response buscarPorCodigo(@PathParam("codigo") int codigo) {
+    public Response processarOrdemProducao(OrdemProducaoDTO ordemProducaoDTO) {
         ResponseBuilder resposta;
         try {
-            OrdemProducaoDTO ordemProducaoDTO = ordemProducaoNegocio.pesquisaCodigo(codigo);
-            ordemProducaoDTO.setLink("/ordemproducao/codigo/" + ordemProducaoDTO.getCodigo());
+            ordemProducaoNegocio.processarOrdemProducao(ordemProducaoDTO);
+            OrdemProducaoDTO ordemProducaoDTOTemp = ordemProducaoNegocio.pesquisaCodigo(ordemProducaoDTO.getCodigo());
+            ordemProducaoDTOTemp.setLink("/ordemproducao/codigo/" + ordemProducaoDTO.getCodigo());
             resposta = Response.ok();
-            resposta.entity(ordemProducaoDTO);
+            resposta.entity(ordemProducaoDTOTemp);
         } catch (Exception ex) {
             resposta = Response.status(400);
             resposta.entity(new MensagemErro(ex.getMessage()));
         }
         return resposta.build();
     }
-
-
 
     @GET
     @Path("/itens")
@@ -300,16 +366,5 @@ public class OrdemProducaoServico {
         }
         return resposta.build();
     }
-
-    
-
-
-    
-
-
-
-
-
-
 
 }
