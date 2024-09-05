@@ -79,12 +79,11 @@ public class EstoqueServico {
         return resposta.build();
     }
 
-
-
     @GET
     @Path("/codigo/{codigo}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response buscarEstoquePorCodigo(@PathParam("codigo") int codigo) {
+    public Response buscarEstoquePorCodigo(@PathParam("codigo") int codigo) 
+    {
         ResponseBuilder resposta;
         try {
             RegistroEstoqueDTO estoqueDTO = registroEstoqueNegocio.pesquisaCodigo(codigo);
@@ -128,5 +127,25 @@ public class EstoqueServico {
         return resposta.build();
     }
 
+
+    @GET
+    @Path("/descarte")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response buscarPorDescartadosEData(@QueryParam("dataInicial") String dataInicial, @QueryParam("dataFinal") String dataFinal) {
+        ResponseBuilder resposta;
+        try {
+            DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            List<RegistroEstoqueDTO> listaEstoqueDTO = registroEstoqueNegocio.buscarPorDescartadosEData(LocalDate.parse(dataInicial, formato), LocalDate.parse(dataFinal, formato));
+            for (RegistroEstoqueDTO estoqueDTO : listaEstoqueDTO) {
+                estoqueDTO.setLink("/estoque/codigo/" + estoqueDTO.getCodigo());
+            }
+            resposta = Response.ok();
+            resposta.entity(listaEstoqueDTO);
+        } catch (Exception ex) {
+            resposta = Response.status(400);
+            resposta.entity(new MensagemErro(ex.getMessage()));
+        }
+        return resposta.build();
+    }
 
 }

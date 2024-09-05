@@ -57,7 +57,6 @@ public class RegistroEstoqueNegocio {
 		}
 	}
 
-
 	public void excluir(RegistroEstoqueDTO registroEstoqueDTO) throws NegocioException {
 
 		RegistroEstoque registroEstoque = this.toEntity(registroEstoqueDTO);
@@ -82,7 +81,6 @@ public class RegistroEstoqueNegocio {
 			throw new NegocioException("Erro ao excluir registro de estoque - " + ex.getMessage());
 		}
 	}
-
 
 	public RegistroEstoqueDTO pesquisaCodigo(int codigo) throws NegocioException {
 		try {
@@ -112,7 +110,14 @@ public class RegistroEstoqueNegocio {
 			throw new NegocioException("Erro ao pesquisar registro de estoque por tipo de movimento e data - " + ex.getMessage());
 		}
 	}
-
+	
+	public List<RegistroEstoqueDTO> buscarPorDescartadosEData(LocalDate dataInicial, LocalDate dataFinal) throws NegocioException {
+		try {
+			return this.toDTOAll(registroDAO.buscarPorDescartadosEData(dataInicial, dataFinal));
+		} catch (PersistenciaException ex) {
+			throw new NegocioException("Erro ao pesquisar registro de estoque por descarte e periodo de data - " + ex.getMessage());
+		}
+	}
 
 	public List<RegistroEstoqueDTO> buscarPorMovimentoEPeriodo(MovimentoEstoqueDTO movimento, LocalDate dataInicial, LocalDate dataFinal) throws NegocioException {
 		try {

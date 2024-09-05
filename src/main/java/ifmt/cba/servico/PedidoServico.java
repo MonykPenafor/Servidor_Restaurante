@@ -314,4 +314,46 @@ public class PedidoServico {
         }
         return resposta.build();
     }
+
+    
+    @GET
+    @Path("/tempomedio")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response calcularMediaTempoPrdoucaoFinalizacao() {
+        ResponseBuilder resposta;
+        try {
+            long totalMinutos = 0;
+
+            List<PedidoDTO> listaPedidoPronto = pedidoNegocio.pesquisaPorEstado(EstadoPedidoDTO.PRONTO);
+            List<PedidoDTO> listaPedidoEntrega = pedidoNegocio.pesquisaPorEstado(EstadoPedidoDTO.ENTREGA);
+            List<PedidoDTO> listaPedidoConcluido = pedidoNegocio.pesquisaPorEstado(EstadoPedidoDTO.CONCLUIDO);
+
+            listaPedidoConcluido.addAll(listaPedidoEntrega);
+            listaPedidoConcluido.addAll(listaPedidoPronto);
+
+            for (PedidoDTO pedidoDTO : listaPedidoConcluido){
+                pedidoDTO.setLink("/pedido/codigo/" + pedidoDTO.getCodigo());
+
+                Duration tempo = Duration.between(pedidoDTO.getHoraPedido(), pedidoDTO.getHoraPronto());
+
+                totalMinutos += tempo.toMinutes();
+            }
+
+            long tempoMedioEmMinutos = (listaPedidoConcluido.size() > 0) ? totalMinutos / listaPedidoConcluido.size() : 0;
+
+            long horas = tempoMedioEmMinutos / 60;
+            long minutos = tempoMedioEmMinutos % 60;
+
+            String tempoMedioFormatado = String.format("%02d:%02d", horas, minutos);
+
+            resposta = Response.ok();
+            resposta.entity(tempoMedioFormatado);
+        } catch (Exception ex) {
+            resposta = Response.status(400);
+            resposta.entity(new MensagemErro(ex.getMessage()));
+        }
+        return resposta.build();
+    }
+
+    
 }
