@@ -46,8 +46,6 @@ public class CardapioServico {
             cardapioNegocio.inserir(cardapioDTO);
             CardapioDTO cardapioDTOTemp = cardapioNegocio.pesquisaPorNome(cardapioDTO.getNome()).get(0);
             cardapioDTOTemp.setLink("/cardapio/codigo/"+cardapioDTOTemp.getCodigo());
-            CardapioDTO cardapioDTOTemp = cardapioNegocio.pesquisaPorNome(cardapioDTO.getNome()).get(0);
-            cardapioDTOTemp.setLink("/cardapio/codigo/"+cardapioDTOTemp.getCodigo());
             resposta = Response.ok();
             resposta.entity(cardapioDTOTemp);
         } catch (Exception ex) {
@@ -64,8 +62,6 @@ public class CardapioServico {
         ResponseBuilder resposta;
         try {
             cardapioNegocio.alterar(cardapioDTO);
-            CardapioDTO cardapioDTOTemp = cardapioNegocio.pesquisaCodigo(cardapioDTO.getCodigo());
-            cardapioDTOTemp.setLink("/cardapio/codigo/"+cardapioDTO.getCodigo());
             CardapioDTO cardapioDTOTemp = cardapioNegocio.pesquisaCodigo(cardapioDTO.getCodigo());
             cardapioDTOTemp.setLink("/cardapio/codigo/"+cardapioDTO.getCodigo());
             resposta = Response.ok();

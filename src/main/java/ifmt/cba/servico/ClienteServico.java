@@ -49,8 +49,6 @@ public class ClienteServico {
             clienteNegocio.inserir(clienteDTO);
             ClienteDTO clienteDTOTemp = clienteNegocio.pesquisaParteNome(clienteDTO.getNome()).get(0);
             clienteDTOTemp.setLink("/cliente/codigo/"+clienteDTOTemp.getCodigo());
-            ClienteDTO clienteDTOTemp = clienteNegocio.pesquisaParteNome(clienteDTO.getNome()).get(0);
-            clienteDTOTemp.setLink("/cliente/codigo/"+clienteDTOTemp.getCodigo());
             resposta = Response.ok();
             resposta.entity(clienteDTOTemp);
             resposta.entity(clienteDTOTemp);
@@ -69,8 +67,6 @@ public class ClienteServico {
         ResponseBuilder resposta;
         try {
             clienteNegocio.alterar(clienteDTO);
-            ClienteDTO clienteDTOTemp = clienteNegocio.pesquisaCodigo(clienteDTO.getCodigo());
-            clienteDTOTemp.setLink("/cliente/codigo/"+clienteDTOTemp.getCodigo());
             ClienteDTO clienteDTOTemp = clienteNegocio.pesquisaCodigo(clienteDTO.getCodigo());
             clienteDTOTemp.setLink("/cliente/codigo/"+clienteDTOTemp.getCodigo());
             resposta = Response.ok();
