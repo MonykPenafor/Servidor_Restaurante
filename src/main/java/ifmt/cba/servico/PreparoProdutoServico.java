@@ -71,6 +71,25 @@ public class PreparoProdutoServico {
         return resposta.build();
     }
 
+    @PUT
+    @Path("/atualizarValorPreparo")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response atualizarValorPreparo(PreparoProdutoDTO preparoProdutoDTO) {
+        ResponseBuilder resposta;
+        try {
+            preparoProdutoNegocio.atualizarValorPreparo(preparoProdutoDTO.getCodigo(), preparoProdutoDTO.getValorPreparo());
+            PreparoProdutoDTO preparoProdutoDTOTemp = preparoProdutoNegocio.pesquisaPorCodigo(preparoProdutoDTO.getCodigo());
+            preparoProdutoDTOTemp.setLink("/preparoproduto/codigo/" + preparoProdutoDTOTemp.getCodigo());
+            resposta = Response.ok();
+            resposta.entity(preparoProdutoDTOTemp);
+        } catch (Exception ex) {
+            resposta = Response.status(400);
+            resposta.entity(new MensagemErro(ex.getMessage()));
+        }
+        return resposta.build();
+    }
+
     @DELETE
     @Path("/{codigo}")
     @Produces(MediaType.APPLICATION_JSON)

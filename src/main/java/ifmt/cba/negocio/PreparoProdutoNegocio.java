@@ -61,6 +61,22 @@ public class PreparoProdutoNegocio {
 		}
 	}
 
+	public void atualizarValorPreparo(int codigo, float valorPreparo) throws NegocioException {
+		try {
+			PreparoProduto preparoProduto = preparoProdutoDAO.buscarPorCodigo(codigo);
+			if (preparoProduto == null) {
+				throw new NegocioException("Não existe esse preparo de produto");
+			}
+			preparoProduto.setValorPreparo(valorPreparo);
+			preparoProdutoDAO.beginTransaction();
+			preparoProdutoDAO.alterar(preparoProduto);
+			preparoProdutoDAO.commitTransaction();
+		} catch (PersistenciaException ex) {
+			preparoProdutoDAO.rollbackTransaction();
+			throw new NegocioException("Erro ao atualizar o valor de preparo do produto - " + ex.getMessage());
+		}
+	}
+	
 	public void excluir(int codigo) throws NegocioException {
 
 		try {

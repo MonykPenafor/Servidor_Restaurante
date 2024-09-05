@@ -61,7 +61,7 @@ public class RegistroEstoqueDAO extends DAO<RegistroEstoque> {
         List<RegistroEstoque> listaRegistro = null;
         try {
             Query query = this.entityManager
-                    .createQuery("SELECT re FROM RegistroEstoque re WHERE (re.movimento = 'VENCIMENTO') OR (re.movimento = 'DANIFICADO') AND re.data >= :pDataInicial AND re.data <= :pDataFinal ORDER BY re.data DESC");
+                    .createQuery("SELECT re FROM RegistroEstoque re WHERE (re.movimento = 'VENCIMENTO' OR re.movimento = 'DANIFICADO') AND (re.data >= :pDataInicial AND re.data <= :pDataFinal) ORDER BY re.data DESC");
             query.setParameter("pDataInicial", dataInicial);
             query.setParameter("pDataFinal", dataFinal);
             listaRegistro = query.getResultList();

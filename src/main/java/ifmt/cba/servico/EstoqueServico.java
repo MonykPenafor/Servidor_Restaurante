@@ -15,6 +15,7 @@ import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.ResponseBuilder;
@@ -82,7 +83,7 @@ public class EstoqueServico {
     @GET
     @Path("/descarte")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response buscarPorDescartadosEData(@PathParam("dataInicial") String dataInicial, @PathParam("dataFinal") String dataFinal) {
+    public Response buscarPorDescartadosEData(@QueryParam("dataInicial") String dataInicial, @QueryParam("dataFinal") String dataFinal) {
         ResponseBuilder resposta;
         try {
             DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
