@@ -2,14 +2,11 @@ package ifmt.cba.servico;
 
 import java.util.List;
 
-import ifmt.cba.dto.ClienteDTO;
-import ifmt.cba.dto.GrupoAlimentarDTO;
-import ifmt.cba.negocio.ClienteNegocio;
-import ifmt.cba.persistencia.ClienteDAO;
+import ifmt.cba.dto.BairroDTO;
+import ifmt.cba.negocio.BairroNegocio;
+import ifmt.cba.persistencia.BairroDAO;
 import ifmt.cba.persistencia.FabricaEntityManager;
-import ifmt.cba.persistencia.PedidoDAO;
 import ifmt.cba.persistencia.PersistenciaException;
-import ifmt.cba.servico.util.MensagemErro;
 import ifmt.cba.servico.util.MensagemErro;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
@@ -23,18 +20,16 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.ResponseBuilder;
 
-@Path("/cliente")
-public class ClienteServico {
+@Path("/bairro")
+public class BairroServico {
 
-    private static ClienteDAO clienteDAO;
-    private static PedidoDAO pedidoDAO;
-    private static ClienteNegocio clienteNegocio;
+    private static BairroNegocio bairroNegocio;
+    private static BairroDAO bairroDAO;
 
     static {
         try {
-            clienteDAO = new ClienteDAO(FabricaEntityManager.getEntityManagerProducao());
-            pedidoDAO = new PedidoDAO(FabricaEntityManager.getEntityManagerProducao());
-            clienteNegocio = new ClienteNegocio(clienteDAO, pedidoDAO);
+            bairroDAO = new BairroDAO(FabricaEntityManager.getEntityManagerProducao());
+            bairroNegocio = new BairroNegocio(bairroDAO);
         } catch (PersistenciaException e) {
             e.printStackTrace();
         }
@@ -43,20 +38,16 @@ public class ClienteServico {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response adicionar(ClienteDTO clienteDTO) {
+    public Response adicionar(BairroDTO bairroDTO) {
         ResponseBuilder resposta;
         try {
-            clienteNegocio.inserir(clienteDTO);
-            ClienteDTO clienteDTOTemp = clienteNegocio.pesquisaParteNome(clienteDTO.getNome()).get(0);
-            clienteDTOTemp.setLink("/cliente/codigo/"+clienteDTOTemp.getCodigo());
-            ClienteDTO clienteDTOTemp = clienteNegocio.pesquisaParteNome(clienteDTO.getNome()).get(0);
-            clienteDTOTemp.setLink("/cliente/codigo/"+clienteDTOTemp.getCodigo());
+            bairroNegocio.inserir(bairroDTO);
+            BairroDTO bairroDTOTemp = bairroNegocio.pesquisaParteNome(bairroDTO.getNome()).get(0);
+            bairroDTOTemp.setLink("/bairro/codigo/"+ bairroDTOTemp.getCodigo());
             resposta = Response.ok();
-            resposta.entity(clienteDTOTemp);
-            resposta.entity(clienteDTOTemp);
+            resposta.entity(bairroDTOTemp);
         } catch (Exception ex) {
             resposta = Response.status(400);
-            resposta.entity(new MensagemErro(ex.getMessage()));
             resposta.entity(new MensagemErro(ex.getMessage()));
         }
         return resposta.build();
@@ -65,19 +56,16 @@ public class ClienteServico {
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response alterar(ClienteDTO clienteDTO) {
+    public Response alterar(BairroDTO bairroDTO) {
         ResponseBuilder resposta;
         try {
-            clienteNegocio.alterar(clienteDTO);
-            ClienteDTO clienteDTOTemp = clienteNegocio.pesquisaCodigo(clienteDTO.getCodigo());
-            clienteDTOTemp.setLink("/cliente/codigo/"+clienteDTOTemp.getCodigo());
-            ClienteDTO clienteDTOTemp = clienteNegocio.pesquisaCodigo(clienteDTO.getCodigo());
-            clienteDTOTemp.setLink("/cliente/codigo/"+clienteDTOTemp.getCodigo());
+            bairroNegocio.alterar(bairroDTO);
+            BairroDTO bairroDTOTemp = bairroNegocio.pesquisaCodigo(bairroDTO.getCodigo());
+            bairroDTOTemp.setLink("/bairro/codigo/"+bairroDTO.getCodigo());
             resposta = Response.ok();
-            resposta.entity(clienteDTOTemp);
+            resposta.entity(bairroDTOTemp);
         } catch (Exception ex) {
             resposta = Response.status(400);
-            resposta.entity(new MensagemErro(ex.getMessage()));
             resposta.entity(new MensagemErro(ex.getMessage()));
         }
         return resposta.build();
@@ -89,7 +77,7 @@ public class ClienteServico {
     public Response excluir(@PathParam("codigo") int codigo) {
         ResponseBuilder resposta;
         try {
-            clienteNegocio.excluir(codigo);
+            bairroNegocio.excluir(codigo);
             resposta = Response.noContent();
         } catch (Exception ex) {
             resposta = Response.status(400);
@@ -104,13 +92,13 @@ public class ClienteServico {
     public Response buscarPorCodigo(@PathParam("codigo") int codigo) {
         ResponseBuilder resposta;
         try {
-            ClienteDTO clienteDTO = clienteNegocio.pesquisaCodigo(codigo);
-            clienteDTO.setLink("/cliente/codigo/"+clienteDTO.getCodigo());
+            BairroDTO bairroDTO = bairroNegocio.pesquisaCodigo(codigo);
+            bairroDTO.setLink("/bairro/codigo/"+bairroDTO.getCodigo());
             resposta = Response.ok();
-            resposta.entity(clienteDTO);
+            resposta.entity(bairroDTO);
         } catch (Exception ex) {
             resposta = Response.status(400);
-                        resposta.entity(new MensagemErro(ex.getMessage()));
+            resposta.entity(new MensagemErro(ex.getMessage()));
         }
         return resposta.build();
     }
@@ -121,12 +109,12 @@ public class ClienteServico {
     public Response buscarPorNome(@PathParam("nome") String nome) {
         ResponseBuilder resposta;
         try {
-            List<ClienteDTO> listaClienteDTO = clienteNegocio.pesquisaParteNome(nome);
-            for (ClienteDTO clienteDTO : listaClienteDTO) {
-                clienteDTO.setLink("/cliente/codigo/"+clienteDTO.getCodigo());
+            List<BairroDTO> listaBairroDTO = bairroNegocio.pesquisaParteNome(nome);
+            for (BairroDTO bairroDTO : listaBairroDTO) {
+                bairroDTO.setLink("/bairro/codigo/"+bairroDTO.getCodigo());
             }
             resposta = Response.ok();
-            resposta.entity(listaClienteDTO);
+            resposta.entity(listaBairroDTO);
         } catch (Exception ex) {
             resposta = Response.status(400);
             resposta.entity(new MensagemErro(ex.getMessage()));

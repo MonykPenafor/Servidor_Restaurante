@@ -38,7 +38,7 @@ public class OrdemProducaoNegocio {
 		}
 	}
 
-	public void inserir(OrdemProducaoDTO ordemProducaoDTO) throws NegocioException {
+	public int inserir(OrdemProducaoDTO ordemProducaoDTO) throws NegocioException {
 
 		OrdemProducao ordemProducao = this.toEntity(ordemProducaoDTO);
 		String mensagemErros = ordemProducao.validar();
@@ -49,8 +49,9 @@ public class OrdemProducaoNegocio {
 
 		try {
 			ordemProducaoDAO.beginTransaction();
-			ordemProducaoDAO.incluir(ordemProducao);
+			int id = (int)ordemProducaoDAO.incluir(ordemProducao);
 			ordemProducaoDAO.commitTransaction();
+			return id;
 		} catch (PersistenciaException ex) {
 			ordemProducaoDAO.rollbackTransaction();
 			throw new NegocioException("Erro ao incluir ordem de producao - " + ex.getMessage());
@@ -168,13 +169,12 @@ public class OrdemProducaoNegocio {
 		}
 	}
 
-	public List<OrdemProducaoDTO> toDTOAll(List<OrdemProducao> listaOrdemProducao) {
-		List<OrdemProducaoDTO> listaDTO = new ArrayList<OrdemProducaoDTO>();
-
-		for (OrdemProducao ordemProducao : listaOrdemProducao) {
-			listaDTO.add(this.toDTO(ordemProducao));
+	public List<OrdemProducaoDTO> pesquisaPorEstadoEDataProducao(EstadoOrdemProducaoDTO estado, LocalDate dataInicial, LocalDate dataFinal) throws NegocioException {
+		try {
+			return this.toDTOAll(ordemProducaoDAO.buscarPorEstadoEDataProducao(estado, dataInicial, dataFinal));
+		} catch (PersistenciaException ex) {
+			throw new NegocioException("Erro ao pesquisar ordem de producao pelo estado e data - " + ex.getMessage());
 		}
-		return listaDTO;
 	}
 
 	public void processarOrdemProducao(OrdemProducaoDTO ordemProducaoDTO) throws NegocioException {
@@ -195,7 +195,7 @@ public class OrdemProducaoNegocio {
 		ordemProducaoDAO.beginTransaction();
 		Iterator<ItemOrdemProducao> itensOrdem = ordemProducao.getListaItens().iterator();
 		while (itensOrdem.hasNext() && processouItens) {
-			ItemOrdemProducao itemOrdem = (ItemOrdemProducao) itensOrdem.next();
+			ItemOrdemProducao itemOrdem = itensOrdem.next();
 			produto = produtoNegocio.pesquisaCodigo(itemOrdem.getPreparoProduto().getProduto().getCodigo());
 			if (produto.getEstoque() >= itemOrdem.getQuantidadePorcao()) {
 				produto.setEstoque(produto.getEstoque() - itemOrdem.getQuantidadePorcao());
@@ -206,12 +206,27 @@ public class OrdemProducaoNegocio {
 		}
 		if (processouItens) {
 			ordemProducaoDTO.setEstado(EstadoOrdemProducaoDTO.PROCESSADA);
-			this.alterar(ordemProducaoDTO);
+			ordemProducaoDTO.setDataProducao(LocalDate.now());
+			try {
+				ordemProducaoDAO.alterar(this.toEntity(ordemProducaoDTO));
+			} catch (PersistenciaException e) {
+				ordemProducaoDAO.rollbackTransaction();
+				throw new NegocioException("Não foi possível mudar a situação para processada");
+			}
 			ordemProducaoDAO.commitTransaction();
 		} else {
 			ordemProducaoDAO.rollbackTransaction();
 			throw new NegocioException("Existem produtos sem estoque suficiente para o processamento");
 		}
+	}
+
+	public List<OrdemProducaoDTO> toDTOAll(List<OrdemProducao> listaOrdemProducao) {
+		List<OrdemProducaoDTO> listaDTO = new ArrayList<OrdemProducaoDTO>();
+
+		for (OrdemProducao ordemProducao : listaOrdemProducao) {
+			listaDTO.add(this.toDTO(ordemProducao));
+		}
+		return listaDTO;
 	}
 
 	public OrdemProducaoDTO toDTO(OrdemProducao ordemProducao) {

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 c:\Users\bruno\OneDrive\Documentos\IFMT\ORIENTADO A SERVIÇOS\Restaurante-Servidor\src\main\java\ifmt\cba\dto\BairroDTO.java
 c:\Users\bruno\OneDrive\Documentos\IFMT\ORIENTADO A SERVIÇOS\Restaurante-Servidor\src\main\java\ifmt\cba\dto\CardapioDTO.java
 c:\Users\bruno\OneDrive\Documentos\IFMT\ORIENTADO A SERVIÇOS\Restaurante-Servidor\src\main\java\ifmt\cba\dto\ClienteDTO.java
@@ -84,3 +85,94 @@ c:\Users\bruno\OneDrive\Documentos\IFMT\ORIENTADO A SERVIÇOS\Restaurante-Servid
 c:\Users\bruno\OneDrive\Documentos\IFMT\ORIENTADO A SERVIÇOS\Restaurante-Servidor\src\main\java\ifmt\cba\servico\util\MensagemErro.java
 c:\Users\bruno\OneDrive\Documentos\IFMT\ORIENTADO A SERVIÇOS\Restaurante-Servidor\src\main\java\ifmt\cba\util\ExecutaServidor.java
 c:\Users\bruno\OneDrive\Documentos\IFMT\ORIENTADO A SERVIÇOS\Restaurante-Servidor\src\main\java\ifmt\cba\util\ServidorHTTP.java
+=======
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\dto\BairroDTO.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\dto\CardapioDTO.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\dto\ClienteDTO.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\dto\ColaboradorDTO.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\dto\EntregadorDTO.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\dto\EstadoOrdemProducaoDTO.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\dto\EstadoPedidoDTO.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\dto\GrupoAlimentarDTO.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\dto\ItemOrdemProducaoDTO.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\dto\ItemPedidoDTO.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\dto\MovimentoEstoqueDTO.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\dto\OrdemProducaoDTO.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\dto\PedidoDTO.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\dto\PreparoProdutoDTO.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\dto\ProdutoDTO.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\dto\RegistroEstoqueDTO.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\dto\TipoPreparoDTO.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\entity\Bairro.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\entity\Cardapio.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\entity\Cliente.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\entity\Colaborador.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\entity\Entregador.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\entity\GrupoAlimentar.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\entity\ItemOrdemProducao.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\entity\ItemPedido.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\entity\OrdemProducao.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\entity\Pedido.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\entity\PreparoProduto.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\entity\Produto.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\entity\RegistroEstoque.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\entity\TipoPreparo.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\execucao\AppAlterarPedido.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\execucao\AppAlterarProduto.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\execucao\AppInserirBairro.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\execucao\AppInserirCardapio.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\execucao\AppInserirCliente.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\execucao\AppInserirEntregador.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\execucao\AppInserirGrupoAlimentar.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\execucao\AppInserirOrdemProducao.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\execucao\AppInserirPedido.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\execucao\AppInserirPreparoProduto.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\execucao\AppInserirProduto.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\execucao\AppInserirRegistroEstoque.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\execucao\AppInserirTipoPreparo.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\execucao\AppProcessarOrdemProducao.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\negocio\BairroNegocio.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\negocio\CardapioNegocio.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\negocio\ClienteNegocio.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\negocio\ColaboradorNegocio.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\negocio\EntregadorNegocio.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\negocio\GrupoAlimentarNegocio.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\negocio\NegocioException.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\negocio\OrdemProducaoNegocio.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\negocio\PedidoNegocio.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\negocio\PreparoProdutoNegocio.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\negocio\ProdutoNegocio.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\negocio\RegistroEstoqueNegocio.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\negocio\TipoPreparoNegocio.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\persistencia\BairroDAO.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\persistencia\CardapioDAO.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\persistencia\ClienteDAO.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\persistencia\ColaboradorDAO.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\persistencia\DAO.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\persistencia\EntregadorDAO.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\persistencia\FabricaEntityManager.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\persistencia\GrupoAlimentarDAO.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\persistencia\ItemOrdemProducaoDAO.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\persistencia\ItemPedidoDAO.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\persistencia\OrdemProducaoDAO.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\persistencia\PedidoDAO.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\persistencia\PersistenciaException.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\persistencia\PreparoProdutoDAO.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\persistencia\ProdutoDAO.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\persistencia\RegistroEstoqueDAO.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\persistencia\TipoPreparoDAO.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\servico\BairroServico.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\servico\CardapioServico.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\servico\ClienteServico.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\servico\EntregadorServico.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\servico\EstoqueServico.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\servico\GrupoAlimentarServico.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\servico\OrdemProducaoServico.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\servico\PedidoServico.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\servico\PreparoProdutoServico.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\servico\ProdutoServico.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\servico\TipoPreparoServico.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\servico\util\MensagemErro.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\util\ExecutaServidor.java
+C:\Users\palmo\OneDrive\Documentos\MONYK PAOLA\TSI - IFMT\5 Semestre\POS\restaurante-base-d210bef4e90b4df587becf097bbcf1a7\restaurante-base\src\main\java\ifmt\cba\util\ServidorHTTP.java
+>>>>>>> main

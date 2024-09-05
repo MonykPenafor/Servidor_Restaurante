@@ -20,6 +20,7 @@ ifmt\cba\entity\Entregador.class
 ifmt\cba\negocio\EntregadorNegocio.class
 ifmt\cba\dto\OrdemProducaoDTO.class
 ifmt\cba\negocio\NegocioException.class
+ifmt\cba\execucao\AppProcessarOrdemProducao.class
 ifmt\cba\dto\ColaboradorDTO.class
 ifmt\cba\servico\PedidoServico.class
 ifmt\cba\negocio\PedidoNegocio.class
@@ -37,6 +38,7 @@ ifmt\cba\execucao\AppInserirCliente.class
 ifmt\cba\execucao\AppInserirGrupoAlimentar.class
 ifmt\cba\dto\PedidoDTO.class
 ifmt\cba\persistencia\PreparoProdutoDAO.class
+ifmt\cba\servico\OrdemProducaoServico.class
 ifmt\cba\execucao\AppInserirProduto.class
 ifmt\cba\entity\PreparoProduto.class
 ifmt\cba\dto\MovimentoEstoqueDTO.class
@@ -79,6 +81,7 @@ ifmt\cba\negocio\TipoPreparoNegocio.class
 ifmt\cba\entity\ItemOrdemProducao.class
 ifmt\cba\entity\TipoPreparo.class
 ifmt\cba\dto\ItemOrdemProducaoDTO.class
+ifmt\cba\servico\BairroServico.class
 ifmt\cba\dto\ItemPedidoDTO.class
 ifmt\cba\execucao\AppInserirPedido.class
 ifmt\cba\servico\util\MensagemErro.class

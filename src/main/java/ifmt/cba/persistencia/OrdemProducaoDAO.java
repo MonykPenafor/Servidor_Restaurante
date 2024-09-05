@@ -26,19 +26,34 @@ public class OrdemProducaoDAO extends DAO<OrdemProducao>{
 		return ordemProducao;
 	}
 
-    @SuppressWarnings("unchecked")
-	public List<OrdemProducao> buscarPorEstado(EstadoOrdemProducaoDTO estado) throws PersistenciaException {
-		List<OrdemProducao> listaOrdemProducao = null;
-		try {
-			Query query = this.entityManager
-					.createQuery("SELECT op FROM OrdemProducao op WHERE UPPER(op.estado) = :pEstado");
-			query.setParameter("pEstado", listaOrdemProducao);
-			listaOrdemProducao = query.getResultList();
-		} catch (Exception ex) {
-			throw new PersistenciaException("Erro na selecao por estado - " + ex.getMessage());
-		}
-		return listaOrdemProducao;
-	}
+    // @SuppressWarnings("unchecked")
+	// public List<OrdemProducao> buscarPorEstado(EstadoOrdemProducaoDTO estado) throws PersistenciaException {
+	// 	List<OrdemProducao> listaOrdemProducao = null;
+	// 	try {
+	// 		Query query = this.entityManager
+	// 				.createQuery("SELECT op FROM OrdemProducao op WHERE UPPER(op.estado) = :pEstado");
+	// 		query.setParameter("pEstado", listaOrdemProducao);
+	// 		listaOrdemProducao = query.getResultList();
+	// 	} catch (Exception ex) {
+	// 		throw new PersistenciaException("Erro na selecao por estado - " + ex.getMessage());
+	// 	}
+	// 	return listaOrdemProducao;
+	// }
+
+	@SuppressWarnings("unchecked")
+    public List<OrdemProducao> buscarPorEstado(EstadoOrdemProducaoDTO estado) throws PersistenciaException {
+        List<OrdemProducao> listaOrdemProducao = null;
+        try {
+            Query query = this.entityManager
+                    .createQuery("SELECT op FROM OrdemProducao op WHERE UPPER(op.estado) = :pEstado");
+            query.setParameter("pEstado", estado.toString().toUpperCase());
+            listaOrdemProducao = query.getResultList();
+        } catch (Exception ex) {
+            throw new PersistenciaException("Erro na selecao por estado - " + ex.getMessage());
+        }
+        return listaOrdemProducao;
+    }
+
 
     @SuppressWarnings("unchecked")
 	public List<OrdemProducao> buscarPorDataProducao(LocalDate dataInicial, LocalDate dataFinal) throws PersistenciaException {
@@ -54,5 +69,25 @@ public class OrdemProducaoDAO extends DAO<OrdemProducao>{
 		}
 		return listaOrdemProducao;
 	}
+	
+
+
+
+    @SuppressWarnings("unchecked")
+	public List<OrdemProducao> buscarPorEstadoEDataProducao(EstadoOrdemProducaoDTO estado, LocalDate dataInicial, LocalDate dataFinal) throws PersistenciaException {
+		List<OrdemProducao> listaOrdemProducao = null;
+		try {
+			Query query = this.entityManager
+					.createQuery("SELECT op FROM OrdemProducao op WHERE op.dataProducao >= :pDataInicial AND op.dataProducao <= :pDataFinal AND UPPER(op.estado) = :pEstado");
+                query.setParameter("pDataInicial", dataInicial);
+                query.setParameter("pDataFinal", dataFinal);
+                query.setParameter("pEstado", estado.toString().toUpperCase());
+			listaOrdemProducao = query.getResultList();
+		} catch (Exception ex) {
+			throw new PersistenciaException("Erro na selecao por data de producao e estado - " + ex.getMessage());
+		}
+		return listaOrdemProducao;
+	}
+	
 
 }

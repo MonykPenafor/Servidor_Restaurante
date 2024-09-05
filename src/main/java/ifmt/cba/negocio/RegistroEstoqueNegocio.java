@@ -28,7 +28,7 @@ public class RegistroEstoqueNegocio {
 		this.modelMapper = new ModelMapper();
 	}
 
-	public void inserir(RegistroEstoqueDTO registroEstoqueDTO) throws NegocioException {
+	public int inserir(RegistroEstoqueDTO registroEstoqueDTO) throws NegocioException {
 
 		RegistroEstoque registroEstoque = this.toEntity(registroEstoqueDTO);
 		String mensagemErros = registroEstoque.validar();
@@ -45,11 +45,13 @@ public class RegistroEstoqueNegocio {
 			}else{
 				produtoTemp.setEstoque(produtoTemp.getEstoque() - registroEstoque.getQuantidade());
 			}
+
 			produtoDAO.beginTransaction();
 			produtoDAO.alterar(produtoTemp);
 			produtoDAO.commitTransaction();
-			registroDAO.incluir(registroEstoque);
+			int id = (int)registroDAO.incluir(registroEstoque);
 			registroDAO.commitTransaction();
+			return id;
 		} catch (PersistenciaException ex) {
 			registroDAO.rollbackTransaction();
 			throw new NegocioException("Erro ao incluir registro de estoque - " + ex.getMessage());
@@ -107,6 +109,38 @@ public class RegistroEstoqueNegocio {
 			return this.toDTOAll(registroDAO.buscarPorDescartadosEData(dataInicial, dataFinal));
 		} catch (PersistenciaException ex) {
 			throw new NegocioException("Erro ao pesquisar registro de estoque por descarte e periodo de data - " + ex.getMessage());
+		}
+	}
+	
+	public List<RegistroEstoqueDTO> buscarPorDescartadosEData(LocalDate dataInicial, LocalDate dataFinal) throws NegocioException {
+		try {
+			return this.toDTOAll(registroDAO.buscarPorDescartadosEData(dataInicial, dataFinal));
+		} catch (PersistenciaException ex) {
+			throw new NegocioException("Erro ao pesquisar registro de estoque por descarte e periodo de data - " + ex.getMessage());
+		}
+	}
+
+	public List<RegistroEstoqueDTO> buscarPorMovimentoEPeriodo(MovimentoEstoqueDTO movimento, LocalDate dataInicial, LocalDate dataFinal) throws NegocioException {
+		try {
+			return this.toDTOAll(registroDAO.buscarPorMovimentoEPeriodo(movimento, dataInicial, dataFinal));
+		} catch (PersistenciaException ex) {
+			throw new NegocioException("Erro ao pesquisar registro de estoque por tipo de movimento e data - " + ex.getMessage());
+		}
+	}
+	
+	public List<RegistroEstoqueDTO> buscarPorDescartadosEData(LocalDate dataInicial, LocalDate dataFinal) throws NegocioException {
+		try {
+			return this.toDTOAll(registroDAO.buscarPorDescartadosEData(dataInicial, dataFinal));
+		} catch (PersistenciaException ex) {
+			throw new NegocioException("Erro ao pesquisar registro de estoque por descarte e periodo de data - " + ex.getMessage());
+		}
+	}
+
+	public List<RegistroEstoqueDTO> buscarPorMovimentoEPeriodo(MovimentoEstoqueDTO movimento, LocalDate dataInicial, LocalDate dataFinal) throws NegocioException {
+		try {
+			return this.toDTOAll(registroDAO.buscarPorMovimentoEPeriodo(movimento, dataInicial, dataFinal));
+		} catch (PersistenciaException ex) {
+			throw new NegocioException("Erro ao pesquisar registro de estoque por tipo de movimento e data - " + ex.getMessage());
 		}
 	}
 

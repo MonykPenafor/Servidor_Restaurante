@@ -1,8 +1,11 @@
 package ifmt.cba.servico;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+
+import java.time.Duration;
 
 import ifmt.cba.dto.ClienteDTO;
 import ifmt.cba.dto.EstadoPedidoDTO;
@@ -32,7 +35,7 @@ public class PedidoServico {
 
     private static PedidoNegocio pedidoNegocio;
     private static PedidoDAO pedidoDAO;
-    private static ClienteDAO clienteDAO;
+    private static ClienteDAO clienteDAO;   
 
     static {
         try {
@@ -71,7 +74,7 @@ public class PedidoServico {
         try {
             pedidoNegocio.alterar(pedidoDTO);
             PedidoDTO pedidoDTOTemp = pedidoNegocio.pesquisaCodigo(pedidoDTO.getCodigo());
-            pedidoDTOTemp.setLink("/pedido/codigo" + pedidoDTO.getCodigo());
+            pedidoDTOTemp.setLink("/pedido/codigo/" + pedidoDTO.getCodigo());
             resposta = Response.ok();
             resposta.entity(pedidoDTOTemp);
         } catch (Exception ex) {
@@ -103,9 +106,10 @@ public class PedidoServico {
     public Response mudarPedidoParaProducao(PedidoDTO pedidoDTO) {
         ResponseBuilder resposta;
         try {
+            pedidoDTO.setHoraProducao(LocalTime.now());
             pedidoNegocio.mudarPedidoParaProducao(pedidoDTO);
             PedidoDTO pedidoDTOTemp = pedidoNegocio.pesquisaCodigo(pedidoDTO.getCodigo());
-            pedidoDTOTemp.setLink("/pedido/codigo" + pedidoDTO.getCodigo());
+            pedidoDTOTemp.setLink("/pedido/codigo/" + pedidoDTO.getCodigo());
             
             resposta = Response.ok();
             resposta.entity(pedidoDTOTemp);
@@ -123,9 +127,11 @@ public class PedidoServico {
     public Response mudarPedidoParaPronto(PedidoDTO pedidoDTO) {
         ResponseBuilder resposta;
         try {
+           
+            pedidoDTO.setHoraPronto(LocalTime.now());
             pedidoNegocio.mudarPedidoParaPronto(pedidoDTO);
             PedidoDTO pedidoDTOTemp = pedidoNegocio.pesquisaCodigo(pedidoDTO.getCodigo());
-            pedidoDTOTemp.setLink("/pedido/codigo" + pedidoDTO.getCodigo());
+            pedidoDTOTemp.setLink("/pedido/codigo/" + pedidoDTO.getCodigo());
             resposta = Response.ok();
             resposta.entity(pedidoDTOTemp);
         } catch (Exception ex) {
@@ -142,9 +148,10 @@ public class PedidoServico {
     public Response mudarPedidoParaEntrega(PedidoDTO pedidoDTO) {
         ResponseBuilder resposta;
         try {
+            pedidoDTO.setHoraEntrega(LocalTime.now());
             pedidoNegocio.mudarPedidoParaEntrega(pedidoDTO);
             PedidoDTO pedidoDTOTemp = pedidoNegocio.pesquisaCodigo(pedidoDTO.getCodigo());
-            pedidoDTOTemp.setLink("/pedido/codigo" + pedidoDTO.getCodigo());
+            pedidoDTOTemp.setLink("/pedido/codigo/" + pedidoDTO.getCodigo());
             resposta = Response.ok();
             resposta.entity(pedidoDTOTemp);
         } catch (Exception ex) {
@@ -161,9 +168,10 @@ public class PedidoServico {
     public Response mudarPedidoParaConcluido(PedidoDTO pedidoDTO) {
         ResponseBuilder resposta;
         try {
+            pedidoDTO.setHoraFinalizado(LocalTime.now());
             pedidoNegocio.mudarPedidoParaConcluido(pedidoDTO);
             PedidoDTO pedidoDTOTemp = pedidoNegocio.pesquisaCodigo(pedidoDTO.getCodigo());
-            pedidoDTOTemp.setLink("/pedido/codigo" + pedidoDTO.getCodigo());
+            pedidoDTOTemp.setLink("/pedido/codigo/" + pedidoDTO.getCodigo());
             resposta = Response.ok();
             resposta.entity(pedidoDTOTemp);
         } catch (Exception ex) {
@@ -180,7 +188,7 @@ public class PedidoServico {
         ResponseBuilder resposta;
         try {
             PedidoDTO pedidoDTO = pedidoNegocio.pesquisaCodigo(codigo);
-            pedidoDTO.setLink("/pedido/codigo" + pedidoDTO.getCodigo());
+            pedidoDTO.setLink("/pedido/codigo/" + pedidoDTO.getCodigo());
             resposta = Response.ok();
             resposta.entity(pedidoDTO);
         } catch (Exception ex) {
@@ -267,4 +275,85 @@ public class PedidoServico {
         }
         return resposta.build();
     }
+
+    @GET
+    @Path("/tempomedio")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response calcularMediaTempoProducao() {
+        ResponseBuilder resposta;
+        try {
+            long totalMinutos = 0;
+
+            List<PedidoDTO> listaPedidoPronto = pedidoNegocio.pesquisaPorEstado(EstadoPedidoDTO.PRONTO);
+            List<PedidoDTO> listaPedidoEntrega = pedidoNegocio.pesquisaPorEstado(EstadoPedidoDTO.ENTREGA);
+            List<PedidoDTO> listaPedidoConcluido = pedidoNegocio.pesquisaPorEstado(EstadoPedidoDTO.CONCLUIDO);
+
+            listaPedidoConcluido.addAll(listaPedidoEntrega);
+            listaPedidoConcluido.addAll(listaPedidoPronto);
+
+            for (PedidoDTO pedidoDTO : listaPedidoConcluido){
+                pedidoDTO.setLink("/pedido/codigo/" + pedidoDTO.getCodigo());
+
+                Duration tempo = Duration.between(pedidoDTO.getHoraPedido(), pedidoDTO.getHoraPronto());
+
+                totalMinutos += tempo.toMinutes();
+            }
+
+            long tempoMedioEmMinutos = (listaPedidoConcluido.size() > 0) ? totalMinutos / listaPedidoConcluido.size() : 0;
+
+            long horas = tempoMedioEmMinutos / 60;
+            long minutos = tempoMedioEmMinutos % 60;
+
+            String tempoMedioFormatado = String.format("%02d:%02d", horas, minutos);
+
+            resposta = Response.ok();
+            resposta.entity(tempoMedioFormatado);
+        } catch (Exception ex) {
+            resposta = Response.status(400);
+            resposta.entity(new MensagemErro(ex.getMessage()));
+        }
+        return resposta.build();
+    }
+
+    
+    @GET
+    @Path("/tempomedio")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response calcularMediaTempoPrdoucaoFinalizacao() {
+        ResponseBuilder resposta;
+        try {
+            long totalMinutos = 0;
+
+            List<PedidoDTO> listaPedidoPronto = pedidoNegocio.pesquisaPorEstado(EstadoPedidoDTO.PRONTO);
+            List<PedidoDTO> listaPedidoEntrega = pedidoNegocio.pesquisaPorEstado(EstadoPedidoDTO.ENTREGA);
+            List<PedidoDTO> listaPedidoConcluido = pedidoNegocio.pesquisaPorEstado(EstadoPedidoDTO.CONCLUIDO);
+
+            listaPedidoConcluido.addAll(listaPedidoEntrega);
+            listaPedidoConcluido.addAll(listaPedidoPronto);
+
+            for (PedidoDTO pedidoDTO : listaPedidoConcluido){
+                pedidoDTO.setLink("/pedido/codigo/" + pedidoDTO.getCodigo());
+
+                Duration tempo = Duration.between(pedidoDTO.getHoraPedido(), pedidoDTO.getHoraPronto());
+
+                totalMinutos += tempo.toMinutes();
+            }
+
+            long tempoMedioEmMinutos = (listaPedidoConcluido.size() > 0) ? totalMinutos / listaPedidoConcluido.size() : 0;
+
+            long horas = tempoMedioEmMinutos / 60;
+            long minutos = tempoMedioEmMinutos % 60;
+
+            String tempoMedioFormatado = String.format("%02d:%02d", horas, minutos);
+
+            resposta = Response.ok();
+            resposta.entity(tempoMedioFormatado);
+        } catch (Exception ex) {
+            resposta = Response.status(400);
+            resposta.entity(new MensagemErro(ex.getMessage()));
+        }
+        return resposta.build();
+    }
+
+    
 }
