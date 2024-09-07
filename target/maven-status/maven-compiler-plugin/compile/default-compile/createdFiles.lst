@@ -26,6 +26,7 @@ ifmt\cba\servico\PedidoServico.class
 ifmt\cba\negocio\PedidoNegocio.class
 ifmt\cba\persistencia\RegistroEstoqueDAO.class
 ifmt\cba\dto\ClienteDTO.class
+ifmt\cba\servico\ColaboradorServico.class
 ifmt\cba\persistencia\ClienteDAO.class
 ifmt\cba\persistencia\ColaboradorDAO.class
 ifmt\cba\persistencia\TipoPreparoDAO.class

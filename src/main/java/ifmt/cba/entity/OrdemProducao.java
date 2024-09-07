@@ -41,7 +41,7 @@ public class OrdemProducao {
     @Column(name = "estado")
     private EstadoOrdemProducaoDTO estado;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.REFRESH})
+    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.REFRESH, CascadeType.MERGE})
     @JoinColumn(name = "id_ordem")
     private List<ItemOrdemProducao> listaItens;
 

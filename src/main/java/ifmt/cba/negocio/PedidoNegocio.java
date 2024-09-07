@@ -137,7 +137,6 @@ public class PedidoNegocio {
 		}
 	}
 
-
 	public List<PedidoDTO> pesquisaPorDataProducao(LocalDate dataInicial, LocalDate dataFinal) throws NegocioException {
 		try {
 			return this.toDTOAll(pedidoDAO.buscarPorDataPedido(dataInicial, dataFinal));
@@ -218,7 +217,7 @@ public class PedidoNegocio {
 					"Pedido esta no estado: " + pedidoDTO.getEstado() + ", nao pode mudar para Concluido");
 		}
 	}
-
+	
 	public List<PedidoDTO> toDTOAll(List<Pedido> listaPedido) {
 		List<PedidoDTO> listaDTO = new ArrayList<PedidoDTO>();
 

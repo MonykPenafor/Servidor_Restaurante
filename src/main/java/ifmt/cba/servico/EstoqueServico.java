@@ -61,7 +61,6 @@ public class EstoqueServico {
         }
         return resposta.build();
     }
-
     
     @DELETE
     @Path("/{codigo}")
@@ -126,7 +125,6 @@ public class EstoqueServico {
         }
         return resposta.build();
     }
-
 
     @GET
     @Path("/descarte")

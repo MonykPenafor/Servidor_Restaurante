@@ -147,24 +147,6 @@ public class OrdemProducaoServico {
         return resposta.build();
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     @GET
     @Path("/codigo/{codigo}")
     @Produces(MediaType.APPLICATION_JSON)

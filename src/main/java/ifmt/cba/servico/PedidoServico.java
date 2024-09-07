@@ -10,6 +10,7 @@ import java.time.Duration;
 import ifmt.cba.dto.ClienteDTO;
 import ifmt.cba.dto.EstadoPedidoDTO;
 import ifmt.cba.dto.PedidoDTO;
+import ifmt.cba.negocio.ClienteNegocio;
 import ifmt.cba.negocio.PedidoNegocio;
 import ifmt.cba.persistencia.ClienteDAO;
 import ifmt.cba.persistencia.FabricaEntityManager;
@@ -181,6 +182,11 @@ public class PedidoServico {
         return resposta.build();
     }
 
+
+
+
+
+
     @GET
     @Path("/codigo/{codigo}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -258,11 +264,14 @@ public class PedidoServico {
     }
 
     @GET
-    @Path("/cliente")
+    @Path("/cliente/{codigo}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response buscarPorCliente(ClienteDTO clienteDTO) {
+    public Response buscarPorCliente(@PathParam("codigo") int codigo) {
         ResponseBuilder resposta;
         try {
+            ClienteNegocio clienteNegocio = new ClienteNegocio(clienteDAO, pedidoDAO);
+            ClienteDTO clienteDTO = clienteNegocio.pesquisaCodigo(codigo);
+
             List<PedidoDTO> listaPedidoDTO = pedidoNegocio.pesquisaPorCliente(clienteDTO);
             for (PedidoDTO pedidoDTO : listaPedidoDTO){
                 pedidoDTO.setLink("/pedido/codigo/" + pedidoDTO.getCodigo());
@@ -277,7 +286,7 @@ public class PedidoServico {
     }
 
     @GET
-    @Path("/tempomedio")
+    @Path("/tempomedioproducao")
     @Produces(MediaType.APPLICATION_JSON)
     public Response calcularMediaTempoProducao() {
         ResponseBuilder resposta;
@@ -317,24 +326,19 @@ public class PedidoServico {
 
     
     @GET
-    @Path("/tempomedio")
+    @Path("/tempomediofinalizacao")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response calcularMediaTempoPrdoucaoFinalizacao() {
+    public Response calcularMediaTempoDeProntoAConcluido() {
         ResponseBuilder resposta;
         try {
             long totalMinutos = 0;
 
-            List<PedidoDTO> listaPedidoPronto = pedidoNegocio.pesquisaPorEstado(EstadoPedidoDTO.PRONTO);
-            List<PedidoDTO> listaPedidoEntrega = pedidoNegocio.pesquisaPorEstado(EstadoPedidoDTO.ENTREGA);
             List<PedidoDTO> listaPedidoConcluido = pedidoNegocio.pesquisaPorEstado(EstadoPedidoDTO.CONCLUIDO);
-
-            listaPedidoConcluido.addAll(listaPedidoEntrega);
-            listaPedidoConcluido.addAll(listaPedidoPronto);
 
             for (PedidoDTO pedidoDTO : listaPedidoConcluido){
                 pedidoDTO.setLink("/pedido/codigo/" + pedidoDTO.getCodigo());
 
-                Duration tempo = Duration.between(pedidoDTO.getHoraPedido(), pedidoDTO.getHoraPronto());
+                Duration tempo = Duration.between(pedidoDTO.getHoraPronto(), pedidoDTO.getHoraFinalizado());
 
                 totalMinutos += tempo.toMinutes();
             }

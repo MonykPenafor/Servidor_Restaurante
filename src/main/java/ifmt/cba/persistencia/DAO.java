@@ -20,14 +20,18 @@ public class DAO<VO> {
 	// }
 
 	public Object incluir(VO vo) throws PersistenciaException {
-        try {
-            this.entityManager.persist(vo);
-            this.entityManager.flush();
-            return getId(vo);
-        } catch (Exception e) {
-            throw new PersistenciaException("Erro ao incluir " + vo.getClass() + " - " + e.getMessage());
-        }
-    }
+		try {
+			if (entityManager.contains(vo) || getId(vo) != null) {
+				vo = this.entityManager.merge(vo); // Se a entidade já existe, utilize merge
+			} else {
+				this.entityManager.persist(vo); // Se for uma nova entidade, utilize persist
+			}
+			this.entityManager.flush();
+			return getId(vo);
+		} catch (Exception e) {
+			throw new PersistenciaException("Erro ao incluir " + vo.getClass() + " - " + e.getMessage());
+		}
+	}
 
     private Object getId(VO vo) throws PersistenceException {
         try {

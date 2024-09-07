@@ -67,7 +67,7 @@ public class Pedido {
     @JoinColumn(name = "entregador")
     private Entregador entregador;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.REFRESH})
+    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.REFRESH, CascadeType.MERGE})
     @JoinColumn(name = "id_pedido")
     private List<ItemPedido> listaItens;
 
