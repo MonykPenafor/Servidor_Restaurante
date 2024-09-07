@@ -17,12 +17,11 @@ import jakarta.ws.rs.core.Response.ResponseBuilder;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 
 import ifmt.cba.dto.MovimentoEstoqueDTO;
 import ifmt.cba.dto.RegistroEstoqueDTO;
-
+import ifmt.cba.entity.Produto;
 import ifmt.cba.negocio.RegistroEstoqueNegocio;
 
 import ifmt.cba.persistencia.RegistroEstoqueDAO;
@@ -95,22 +94,16 @@ public class EstoqueServico {
         }
         return resposta.build();
     }
-
+ 
     @GET
     @Path("/descartados")
     @Produces(MediaType.APPLICATION_JSON)
     public Response buscarEstoqueDescartado(@QueryParam("dataInicial") String dataInicial, @QueryParam("dataFinal") String dataFinal) {
         ResponseBuilder resposta;
         try {
-            
             DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-            List<RegistroEstoqueDTO> listaEstoqueVencimento = registroEstoqueNegocio.buscarPorMovimentoEPeriodo(MovimentoEstoqueDTO.VENCIMENTO, LocalDate.parse(dataInicial, formato), LocalDate.parse(dataFinal, formato));
-            
-            List<RegistroEstoqueDTO> listaEstoqueDanificado = registroEstoqueNegocio.buscarPorMovimentoEPeriodo(MovimentoEstoqueDTO.DANIFICADO, LocalDate.parse(dataInicial, formato), LocalDate.parse(dataFinal, formato));
-
-            List<RegistroEstoqueDTO> listaEstoqueDTO = new ArrayList<>(listaEstoqueDanificado);
-            listaEstoqueDTO.addAll(listaEstoqueVencimento);
+            List<RegistroEstoqueDTO> listaEstoqueDTO = registroEstoqueNegocio.buscarPorDescartadosPorPeriodo(LocalDate.parse(dataInicial, formato), LocalDate.parse(dataFinal, formato));
 
             for (RegistroEstoqueDTO estoqueDTO : listaEstoqueDTO) {
                 estoqueDTO.setLink("/estoque/codigo/" + estoqueDTO.getCodigo());
@@ -118,7 +111,6 @@ public class EstoqueServico {
 
             resposta = Response.ok();
             resposta.entity(listaEstoqueDTO);
-
         } catch (Exception ex) {
             resposta = Response.status(400);
             resposta.entity(new MensagemErro(ex.getMessage()));
@@ -127,16 +119,17 @@ public class EstoqueServico {
     }
 
     @GET
-    @Path("/descarte")
+    @Path("/movimento")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response buscarPorDescartadosEData(@QueryParam("dataInicial") String dataInicial, @QueryParam("dataFinal") String dataFinal) {
+    public Response buscarEstoquePorMovimento(@QueryParam("movimento") MovimentoEstoqueDTO movimento) {
         ResponseBuilder resposta;
         try {
-            DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            List<RegistroEstoqueDTO> listaEstoqueDTO = registroEstoqueNegocio.buscarPorDescartadosEData(LocalDate.parse(dataInicial, formato), LocalDate.parse(dataFinal, formato));
+            List<RegistroEstoqueDTO> listaEstoqueDTO = registroEstoqueNegocio.buscarPorMovimento(movimento);
+            
             for (RegistroEstoqueDTO estoqueDTO : listaEstoqueDTO) {
                 estoqueDTO.setLink("/estoque/codigo/" + estoqueDTO.getCodigo());
             }
+
             resposta = Response.ok();
             resposta.entity(listaEstoqueDTO);
         } catch (Exception ex) {
@@ -145,5 +138,27 @@ public class EstoqueServico {
         }
         return resposta.build();
     }
+     
+    @GET
+    @Path("/produto/{codigo}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response buscarEstoquePorProduto(@PathParam("codigo") int codigo) {
+        ResponseBuilder resposta;
+        try {
+			Produto produto = produtoDAO.buscarPorCodigo(codigo);
+            List<RegistroEstoqueDTO> listaEstoqueDTO = registroEstoqueNegocio.buscarPorProduto(produto);
+            
+            for (RegistroEstoqueDTO estoqueDTO : listaEstoqueDTO) {
+                estoqueDTO.setLink("/estoque/codigo/" + estoqueDTO.getCodigo());
+            }
 
+            resposta = Response.ok();
+            resposta.entity(listaEstoqueDTO);
+        } catch (Exception ex) {
+            resposta = Response.status(400);
+            resposta.entity(new MensagemErro(ex.getMessage()));
+        }
+        return resposta.build();
+    }
+ 
 }

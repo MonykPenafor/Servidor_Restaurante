@@ -9,7 +9,6 @@ import java.time.Duration;
 
 import ifmt.cba.dto.ClienteDTO;
 import ifmt.cba.dto.EstadoPedidoDTO;
-import ifmt.cba.dto.OrdemProducaoDTO;
 import ifmt.cba.dto.PedidoDTO;
 import ifmt.cba.negocio.ClienteNegocio;
 import ifmt.cba.negocio.PedidoNegocio;
@@ -38,6 +37,8 @@ public class PedidoServico {
     private static PedidoNegocio pedidoNegocio;
     private static PedidoDAO pedidoDAO;
     private static ClienteDAO clienteDAO;   
+    
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss.SSS");
 
     static {
         try {
@@ -108,7 +109,8 @@ public class PedidoServico {
     public Response mudarPedidoParaProducao(PedidoDTO pedidoDTO) {
         ResponseBuilder resposta;
         try {
-            pedidoDTO.setHoraProducao(LocalTime.now());
+
+            pedidoDTO.setHoraProducao(LocalTime.parse(LocalTime.now().format(formatter)));
             pedidoNegocio.mudarPedidoParaProducao(pedidoDTO);
             PedidoDTO pedidoDTOTemp = pedidoNegocio.pesquisaCodigo(pedidoDTO.getCodigo());
             pedidoDTOTemp.setLink("/pedido/codigo/" + pedidoDTO.getCodigo());
@@ -130,7 +132,7 @@ public class PedidoServico {
         ResponseBuilder resposta;
         try {
            
-            pedidoDTO.setHoraPronto(LocalTime.now());
+            pedidoDTO.setHoraPronto(LocalTime.parse(LocalTime.now().format(formatter)));
             pedidoNegocio.mudarPedidoParaPronto(pedidoDTO);
             PedidoDTO pedidoDTOTemp = pedidoNegocio.pesquisaCodigo(pedidoDTO.getCodigo());
             pedidoDTOTemp.setLink("/pedido/codigo/" + pedidoDTO.getCodigo());
@@ -150,7 +152,7 @@ public class PedidoServico {
     public Response mudarPedidoParaEntrega(PedidoDTO pedidoDTO) {
         ResponseBuilder resposta;
         try {
-            pedidoDTO.setHoraEntrega(LocalTime.now());
+            pedidoDTO.setHoraEntrega(LocalTime.parse(LocalTime.now().format(formatter)));
             pedidoNegocio.mudarPedidoParaEntrega(pedidoDTO);
             PedidoDTO pedidoDTOTemp = pedidoNegocio.pesquisaCodigo(pedidoDTO.getCodigo());
             pedidoDTOTemp.setLink("/pedido/codigo/" + pedidoDTO.getCodigo());
@@ -170,7 +172,7 @@ public class PedidoServico {
     public Response mudarPedidoParaConcluido(PedidoDTO pedidoDTO) {
         ResponseBuilder resposta;
         try {
-            pedidoDTO.setHoraFinalizado(LocalTime.now());
+            pedidoDTO.setHoraFinalizado(LocalTime.parse(LocalTime.now().format(formatter)));
             pedidoNegocio.mudarPedidoParaConcluido(pedidoDTO);
             PedidoDTO pedidoDTOTemp = pedidoNegocio.pesquisaCodigo(pedidoDTO.getCodigo());
             pedidoDTOTemp.setLink("/pedido/codigo/" + pedidoDTO.getCodigo());
@@ -182,11 +184,6 @@ public class PedidoServico {
         }
         return resposta.build();
     }
-
-
-
-
-
 
     @GET
     @Path("/codigo/{codigo}")

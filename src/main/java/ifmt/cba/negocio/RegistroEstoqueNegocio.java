@@ -19,7 +19,6 @@ public class RegistroEstoqueNegocio {
     private ModelMapper modelMapper;
 	private RegistroEstoqueDAO registroDAO;
 	private ProdutoDAO produtoDAO;
-
 	
 	public RegistroEstoqueNegocio(RegistroEstoqueDAO registroDAO, ProdutoDAO produtoDAO) {
 		this.registroDAO = registroDAO;
@@ -111,19 +110,11 @@ public class RegistroEstoqueNegocio {
 		}
 	}
 	
-	public List<RegistroEstoqueDTO> buscarPorDescartadosEData(LocalDate dataInicial, LocalDate dataFinal) throws NegocioException {
+	public List<RegistroEstoqueDTO> buscarPorDescartadosPorPeriodo(LocalDate dataInicial, LocalDate dataFinal) throws NegocioException {
 		try {
-			return this.toDTOAll(registroDAO.buscarPorDescartadosEData(dataInicial, dataFinal));
+			return this.toDTOAll(registroDAO.buscarPorDescartadosPorPeriodo(dataInicial, dataFinal));
 		} catch (PersistenciaException ex) {
 			throw new NegocioException("Erro ao pesquisar registro de estoque por descarte e periodo de data - " + ex.getMessage());
-		}
-	}
-
-	public List<RegistroEstoqueDTO> buscarPorMovimentoEPeriodo(MovimentoEstoqueDTO movimento, LocalDate dataInicial, LocalDate dataFinal) throws NegocioException {
-		try {
-			return this.toDTOAll(registroDAO.buscarPorMovimentoEPeriodo(movimento, dataInicial, dataFinal));
-		} catch (PersistenciaException ex) {
-			throw new NegocioException("Erro ao pesquisar registro de estoque por tipo de movimento e data - " + ex.getMessage());
 		}
 	}
 
