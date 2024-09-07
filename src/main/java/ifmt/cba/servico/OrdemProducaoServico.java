@@ -113,40 +113,6 @@ public class OrdemProducaoServico {
         return resposta.build();
     }
 
-    @PUT
-    @Path("/item")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response alterarItemOrdem(ItemOrdemProducaoDTO itemOrdemProducaoDTO) {
-        ResponseBuilder resposta;
-        try {
-            ordemProducaoNegocio.alterarItemOrdem(itemOrdemProducaoDTO);
-            ItemOrdemProducaoDTO itemOrdemProducaoDTOTemp = ordemProducaoNegocio.pesquisaItemOrdemCodigo(itemOrdemProducaoDTO.getCodigo());
-            itemOrdemProducaoDTOTemp.setLink("/ordemproducao/item/codigo/" + itemOrdemProducaoDTO.getCodigo());
-            resposta = Response.ok();
-            resposta.entity(itemOrdemProducaoDTO);
-        } catch (Exception ex) {
-            resposta = Response.status(400);
-            resposta.entity(new MensagemErro(ex.getMessage()));
-        }
-        return resposta.build();
-    }
-
-    @DELETE
-    @Path("/item/{codigo}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response excluirItemOrdem(@PathParam("codigo") int codigo) {
-        ResponseBuilder resposta;
-        try {
-            ordemProducaoNegocio.excluirItemOrdem(ordemProducaoNegocio.pesquisaItemOrdemCodigo(codigo));
-            resposta = Response.noContent();
-        } catch (Exception ex) {
-            resposta = Response.status(400);
-            resposta.entity(new MensagemErro(ex.getMessage()));
-        }
-        return resposta.build();
-    }
-
     @GET
     @Path("/codigo/{codigo}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -363,5 +329,6 @@ public class OrdemProducaoServico {
         }
         return resposta.build();
     }
+
 
 }
