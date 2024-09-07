@@ -32,7 +32,7 @@ public class PedidoNegocio {
 		this.modelMapper = new ModelMapper();
 	}
 
-	public void inserir(PedidoDTO pedidoDTO) throws NegocioException {
+	public int inserir(PedidoDTO pedidoDTO) throws NegocioException {
 
 		Pedido pedido = this.toEntity(pedidoDTO);
 		String mensagemErros = pedido.validar();
@@ -44,8 +44,9 @@ public class PedidoNegocio {
 		try {
 			pedido.setEstado(EstadoPedidoDTO.REGISTRADO);
 			pedidoDAO.beginTransaction();
-			pedidoDAO.incluir(pedido);
+			int id = (int)pedidoDAO.incluir(pedido);
 			pedidoDAO.commitTransaction();
+			return id;
 		} catch (PersistenciaException ex) {
 			pedidoDAO.rollbackTransaction();
 			throw new NegocioException("Erro ao incluir pedido - " + ex.getMessage());

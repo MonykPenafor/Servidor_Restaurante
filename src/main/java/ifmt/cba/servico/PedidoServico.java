@@ -9,6 +9,7 @@ import java.time.Duration;
 
 import ifmt.cba.dto.ClienteDTO;
 import ifmt.cba.dto.EstadoPedidoDTO;
+import ifmt.cba.dto.OrdemProducaoDTO;
 import ifmt.cba.dto.PedidoDTO;
 import ifmt.cba.negocio.ClienteNegocio;
 import ifmt.cba.negocio.PedidoNegocio;
@@ -55,8 +56,8 @@ public class PedidoServico {
     public Response adicionar(PedidoDTO pedidoDTO) {
         ResponseBuilder resposta;
         try {
-            pedidoNegocio.inserir(pedidoDTO);
-            PedidoDTO pedidoDTOTemp = pedidoNegocio.pesquisaPorCliente(pedidoDTO.getCliente()).get(0);
+            int id = pedidoNegocio.inserir(pedidoDTO);
+            PedidoDTO pedidoDTOTemp = pedidoNegocio.pesquisaCodigo(id);
             pedidoDTOTemp.setLink("/pedido/codigo/" + pedidoDTOTemp.getCodigo());
             resposta = Response.ok();
             resposta.entity(pedidoDTOTemp);
