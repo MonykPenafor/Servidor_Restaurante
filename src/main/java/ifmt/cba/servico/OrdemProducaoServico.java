@@ -77,20 +77,19 @@ public class OrdemProducaoServico {
     public Response alterar(OrdemProducaoDTO ordemProducaoDTO) {
         ResponseBuilder resposta;
         try {
-            if(ordemProducaoDTO.getEstado() != EstadoOrdemProducaoDTO.PROCESSADA){
-
                 ordemProducaoNegocio.alterar(ordemProducaoDTO);
                 List<ItemOrdemProducaoDTO> listaItens = ordemProducaoDTO.getListaItens();
 
                 for(ItemOrdemProducaoDTO item : listaItens){
                     ordemProducaoNegocio.alterarItemOrdem(item);
-                    // item.setLink();
+                    item.setLink("/ordemproducao/item/codigo/" + item.getCodigo());
                 }
 
                 ordemProducaoDTO.setLink("/ordemproducao/codigo/" + ordemProducaoDTO.getCodigo());
-            }
-            resposta = Response.ok();
-            resposta.entity(ordemProducaoDTO);
+                
+                resposta = Response.ok();
+                resposta.entity(ordemProducaoDTO);
+
         } catch (Exception ex) {
             resposta = Response.status(400);
             resposta.entity(new MensagemErro(ex.getMessage()));
@@ -188,17 +187,16 @@ public class OrdemProducaoServico {
     }
 
     @GET
-    @Path("/estadodata")
+    @Path("/relatorio")
     @Produces(MediaType.APPLICATION_JSON)
     public Response buscarProducoesPorPeriodoComCalculoDeValores(
         @QueryParam("dataInicial") String dataInicial,
-        @QueryParam("dataFinal") String dataFinal, 
-        @QueryParam("estado") EstadoOrdemProducaoDTO estado) {
+        @QueryParam("dataFinal") String dataFinal) {
 
         ResponseBuilder resposta;
         try {
 
-            List<OrdemProducaoDTO> listaOrdemProducaoDTO = ordemProducaoNegocio.pesquisaPorEstadoEDataProducao(estado, LocalDate.parse(dataInicial, formato), LocalDate.parse(dataFinal, formato));
+            List<OrdemProducaoDTO> listaOrdemProducaoDTO = ordemProducaoNegocio.pesquisaPorEstadoEDataProducao(EstadoOrdemProducaoDTO.PROCESSADA, LocalDate.parse(dataInicial, formato), LocalDate.parse(dataFinal, formato));
 
             Map<String, float[]> mapaItens = new HashMap<>();
             var valorTotalGeral = 0f;

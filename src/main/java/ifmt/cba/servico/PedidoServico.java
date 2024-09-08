@@ -9,6 +9,8 @@ import java.time.Duration;
 
 import ifmt.cba.dto.ClienteDTO;
 import ifmt.cba.dto.EstadoPedidoDTO;
+import ifmt.cba.dto.ItemOrdemProducaoDTO;
+import ifmt.cba.dto.ItemPedidoDTO;
 import ifmt.cba.dto.PedidoDTO;
 import ifmt.cba.negocio.ClienteNegocio;
 import ifmt.cba.negocio.PedidoNegocio;
@@ -75,7 +77,14 @@ public class PedidoServico {
     public Response alterar(PedidoDTO pedidoDTO) {
         ResponseBuilder resposta;
         try {
+        
             pedidoNegocio.alterar(pedidoDTO);
+            List<ItemPedidoDTO> listaItens = pedidoDTO.getListaItens();
+
+            for(ItemPedidoDTO item : listaItens){
+                pedidoNegocio.alterarItemPedido(item);
+            }
+
             PedidoDTO pedidoDTOTemp = pedidoNegocio.pesquisaCodigo(pedidoDTO.getCodigo());
             pedidoDTOTemp.setLink("/pedido/codigo/" + pedidoDTO.getCodigo());
             resposta = Response.ok();

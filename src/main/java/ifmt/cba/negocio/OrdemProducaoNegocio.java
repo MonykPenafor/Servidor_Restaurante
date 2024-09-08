@@ -66,6 +66,9 @@ public class OrdemProducaoNegocio {
 			throw new NegocioException(mensagemErros);
 		}
 		try {
+			if (ordemProducaoDTO.getEstado() == EstadoOrdemProducaoDTO.PROCESSADA) {
+				throw new NegocioException("Ordem de produção já processada, não pode ser alterada");
+			}
 			if (ordemProducaoDAO.buscarPorCodigo(ordemProducao.getCodigo()) == null) {
 				throw new NegocioException("Nao existe essa ordem de producao");
 			}
