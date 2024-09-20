@@ -2,7 +2,7 @@
 
 Este projeto é uma API REST desenvolvida em Java utilizando Maven. Ela fornece serviços para um restaurante, permitindo a gestão de pedidos, cardápios, e outras coisas de acordo com [este documento de especificação do software](https://github.com/MonykPenafor/Servidor_Restaurante/blob/main/Documento%20para%20cria%C3%A7%C3%A3o%20do%20software.pdf).
 
-Todos os serviços podem ser encontrados na pasta [servicos](/src/main/java/ifmt/cba/servicos)
+Todos os serviços podem ser encontrados na pasta [servicos](src/main/java/ifmt/cba/servico)
 
 ## Funcionalidades
 
